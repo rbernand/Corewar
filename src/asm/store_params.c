@@ -6,21 +6,85 @@
 /*   By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/19 11:32:47 by rbernand          #+#    #+#             */
-/*   Updated: 2015/10/19 12:18:02 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/11 14:54:26 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <asm.h>
 #include <list.h>
+#include <unistd.h>
 
 
-/* static void		write(t_token *self, int fd); */
+
+
+
+#include <stdio.h>
+#include <stdio.h>
+#include <stdio.h>
+#include <stdio.h>
+#include <stdio.h>
+
+/* static int		swap_endian(int value) */
+/* { */
+/* 	static int				out; */
+
+/* 	out = value << 24; */
+/* 	out |= ((value << 8) & 0x00ff0000); */
+/* 	out |= ((value >> 8) & 0x0000ff00); */
+/* 	out |= (value >> 24); */
+/* 	return (out); */
+/* } */
+
+
+static void		write_reg(t_token *self, int fd, char is_short)
+{
+	(void)is_short;
+	write(fd, &self->value, 1);
+}
+
+static void		write_dir(t_token *self, int fd, char is_short)
+{
+	if (is_short)
+	{
+		write(fd, (char *)&self->value + 1, 1);
+		write(fd, (char *)&self->value + 0, 1);
+	}
+	else
+	{
+		write(fd, (char *)&self->value + 3, 1);
+		write(fd, (char *)&self->value + 2, 1);
+		write(fd, (char *)&self->value + 1, 1);
+		write(fd, (char *)&self->value, 1);
+	}
+}
+
+static void		write_ind(t_token *self, int fd, char is_short)
+{
+	if (is_short)
+	{
+		write(fd, (char *)&self->value + 1, 1);
+		write(fd, (char *)&self->value + 0, 1);
+	}
+	else
+	{
+		write(fd, (char *)&self->value + 3, 1);
+		write(fd, (char *)&self->value + 2, 1);
+		write(fd, (char *)&self->value + 1, 1);
+		write(fd, (char *)&self->value, 1);
+	}
+}
+
 
 t_token			*store_params(char **params)
 {
 	t_token			*lst;
 	t_token			*new;
 	size_t			i;
+	void			(*write_fct[3])(t_token *, int, char) = {
+		&write_reg,
+		&write_dir,
+		&write_ind,
+	};
 
 	i = 0;
 	lst = NULL;
@@ -31,6 +95,7 @@ t_token			*store_params(char **params)
 		{
 			new->type_id = _TOKEN_REG;
 			new->value = ft_atoi(params[i] + 1);
+			new->write = write_fct[0];
 		}
 		else if (params[i][0] == DIRECT_CHAR)
 		{
@@ -39,6 +104,7 @@ t_token			*store_params(char **params)
 				new->label_name = ft_strdup(params[i] + 2);
 			else
 				new->value = ft_atoi(params[i] + 1);
+			new->write = write_fct[1];
 		}
 		else
 		{
@@ -47,6 +113,7 @@ t_token			*store_params(char **params)
 				new->label_name = ft_strdup(params[i] + 2);
 			else
 				new->value = ft_atoi(params[i] + 1);
+			new->write = write_fct[2];
 		}
 		PUSH_BACK(&lst, new);
 		i++;

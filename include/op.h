@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2015/10/19 11:44:13 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/11 13:10:01 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # define IND_CODE				3
 
 #include <sys/types.h>
+#include <stdint.h>
 
 #define MAX_ARGS_NUMBER			4
 #define MAX_PLAYERS				4
@@ -65,7 +66,7 @@ struct							s_op
 	size_t				nb_cycle;
 	char				*description;
 	unsigned char		has_ocp;
-	unsigned char		carry;
+	unsigned char		is_short;
 };
 
 extern t_op						op_tab[17];

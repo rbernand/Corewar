@@ -6,7 +6,7 @@
 /*   By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/16 18:35:00 by rbernand          #+#    #+#             */
-/*   Updated: 2015/10/19 12:17:19 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/11 14:42:38 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,24 +50,20 @@ enum							e_token_type
 	_NB_TOKEN_TYPE
 };
 
-struct							s_label
-{
-	t_label					*next;
-	t_instruction			*instruction;
-};
-
 struct							s_token
 {
 	t_token					*next;
 	enum e_token_type		type_id;
-	size_t					value;
+	int						value;
 	char					*label_name;
 	t_label					*label;
+	void					(*write)(t_token *, int, char);
 };
 
 struct							s_instruction
 {
 	t_instruction			*next;
+	char					*label;
 	t_token					*tokens;
 	unsigned char			octet_code;
 	unsigned char			op_code;
@@ -84,6 +80,7 @@ t_bool				is_correct_label(const char *label);
 t_return			add_instruction(const char *line, header_t *header,
 					t_instruction **instructions);
 t_token				*store_params(char **params);
+t_return			link_labels(t_instruction *instructions);
 
 void				put_hexa(const unsigned char c);
 t_op				*get_op_by_id(size_t id);

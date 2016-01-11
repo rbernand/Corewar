@@ -6,7 +6,7 @@
 /*   By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/16 18:10:51 by rbernand          #+#    #+#             */
-/*   Updated: 2015/10/19 11:57:01 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/11 14:55:38 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int			open_output_file(const char *name)
 	char			*cor_file;
 
 	len = ft_strlen(name);
-	cor_file =ft_strnew(len + 2);
+	cor_file = ft_strnew(len + 2);
 	ft_strncat(cor_file, name, len - 2);
 	ft_strcat(cor_file, COR_EXTENSION);
 	ft_putendl(cor_file);
@@ -81,14 +81,18 @@ int					main(int ac, char **av)
 		return (PERROR("Unable to open file."));
 	ft_bzero(&header, sizeof(header_t));
 	header.magic = sizeof(header_t);
-	instructions = 0;
+	instructions = NULL;
 	parse(fd, &header, &instructions);
 	close(fd);
+	t_instruction *tmp;
+	tmp = instructions;
+	while (tmp)
+	{
+		tmp->dump(tmp);
+		tmp = tmp->next;
+	}
+	if (link_labels(instructions) == _ERR)
+		return (PERROR("error with label"));
 	write_cor(av[1], instructions);
-	/* while (instructions) */
-	/* { */
-	/* 	instructions->dump(instructions); */
-	/* 	instructions = instructions->next; */
-	/* } */
 	return (0);
 }

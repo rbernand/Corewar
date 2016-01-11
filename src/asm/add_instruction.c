@@ -6,7 +6,7 @@
 /*   By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/17 16:45:09 by rbernand          #+#    #+#             */
-/*   Updated: 2015/10/19 12:16:56 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/11 14:57:02 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <asm.h>
+
+#include <stdio.h>
 
 static int			get_op_code(const char *str)
 {
@@ -34,6 +36,8 @@ static int			get_op_code(const char *str)
 
 static void				dump_instruction(t_instruction *self)
 {
+	if (self->label)
+		ft_putendl(self->label);
 	ft_putstr("op_id: ");
 	ft_putendl(self->op_data->name);
 	ft_putstr("offset: ");
@@ -47,19 +51,44 @@ static void				dump_instruction(t_instruction *self)
 	}
 }
 
+/* Assert size selon le fichier .h 
+ */
 static size_t		sizeof_instruction(t_instruction *self)
 {
-	/*
-	 * EDIT ME
-	 */
-	return (1 + self->op_data->has_ocp);
+	int				size_params;
+	t_token			*tokens;
+
+	size_params  = 0;
+	tokens = self->tokens;
+	while (tokens)
+	{
+		if (tokens->type_id == _TOKEN_REG)
+			size_params += 1;
+		else if (tokens->type_id == _TOKEN_IND)
+			size_params += 2;
+		else if (tokens->type_id == _TOKEN_DIR && self->op_data->is_short)
+			size_params += 2;
+		else if (tokens->type_id == _TOKEN_DIR && !self->op_data->is_short)
+			size_params += 4;
+		tokens = tokens->next;
+	}
+	return (1 + self->op_data->has_ocp + size_params);
 }
 
 static void			write_instruction(t_instruction *self, int fd)
 {
+	t_token			*tokens;
+
 	write(fd, &self->op_data->op_code, 1);
 	if (self->op_data->has_ocp)
 		write(fd, &self->octet_code, 1);
+	tokens = self->tokens;
+	while (tokens)
+	{
+		if (tokens->write)
+			tokens->write(tokens, fd, self->op_data->is_short);
+		tokens = tokens->next;
+	}
 }
 
 t_return			add_instruction(const char *line, header_t UNUSED(*header),
@@ -85,7 +114,7 @@ t_return			add_instruction(const char *line, header_t UNUSED(*header),
 	new->tokens = store_params(params);
 	ft_tabdel(&params);
 	prev = (t_instruction *)LIST_BACK(*instructions);
-	new->position = prev == 0 ? 0 : prev->position + sizeof_instruction(new);
+	new->position = prev == 0 ? 0 : prev->position + sizeof_instruction(prev);
 	PUSH_BACK(instructions, new);
 	return (_SUCCESS);
 }

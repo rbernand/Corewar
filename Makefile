@@ -6,7 +6,7 @@
 #    By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/10/16 15:08:59 by rbernand          #+#    #+#              #
-#    Updated: 2015/10/19 12:13:13 by rbernand         ###   ########.fr        #
+#    Updated: 2016/01/11 13:55:49 by rbernand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,8 @@ SRC_ASM=main.c \
 		add_instruction.c \
 		put_hexa.c \
 		get_op_by_id.c \
-		store_params.c
+		store_params.c \
+		link_labels.c
 SRC_VM=main.c
 OBJ_ASM=$(SRC_ASM:%.c=$(DIROBJ)$(DIRASM)%.o)
 OBJ_COMMON=$(SRC_COMMON:%.c=$(DIROBJ)$(DIRCOMMON)%.o)
