@@ -6,7 +6,7 @@
 /*   By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/16 18:10:51 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/11 19:14:01 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/11 20:13:42 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int			open_output_file(const char *name)
 }
 
 static t_return		write_cor(char *filename, t_instruction *instructions,
-					header_t *header)
+					t_header *header)
 {
 	int				fd;
 
@@ -70,40 +70,26 @@ static t_return		write_cor(char *filename, t_instruction *instructions,
 	return (_SUCCESS);
 }
 
-#include <stdio.h>
 int					main(int ac, char **av)
 {
-	int					fd;
-	header_t			header;
-	t_instruction		*instructions;
-	t_label				*labels;
-	t_label				*tmp;
+	int				fd;
+	t_header		header;
+	t_instruction	*instructions;
+	t_label			*labels;
 
 	if (ac != 2)
 		return (print_usage());
 	if ((fd = open_input_file(av[1])) < 0)
 		return (PERROR("Unable to open file."));
-	ft_bzero(&header, sizeof(header_t));
+	ft_bzero(&header, sizeof(t_header));
 	header.magic = COREWAR_EXEC_MAGIC;
 	instructions = NULL;
 	labels = NULL;
 	parse(fd, &header, &instructions, &labels);
 	close(fd);
-	tmp = labels;
-	while(labels)
-	{
-		printf("%s %p\n", labels->name, labels->instruction);
-		labels=labels->next;
-	}
-	labels = tmp;
 	if (link_labels(instructions, labels, &header) == _ERR)
 		return (PERROR("error with label"));
 	write_cor(av[1], instructions, &header);
-	/* while (instructions) */
-	/* { */
-	/* 	instructions->dump(instructions); */
-		/* instructions = instructions->next; */
-	/* } */
 	ft_putnbr(((t_instruction *)LIST_BACK(instructions))->position);
 	return (0);
 }

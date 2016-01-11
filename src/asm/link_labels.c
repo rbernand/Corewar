@@ -6,32 +6,28 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:54:02 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/11 19:18:54 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/11 20:24:56 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <asm.h>
-#include <stdio.h>
 
 static t_label		*find_label(const char *name, t_label *labels)
 {
-	while(labels && ft_strcmp(name, labels->name) != 0)
-	{
-		/* ft_putendl(labels->name); */
+	while (labels && ft_strcmp(name, labels->name) != 0)
 		labels = labels->next;
-	}
 	while (labels && labels->next && labels->instruction == NULL)
 		labels = labels->next;
 	return (labels);
 }
 
-t_return					link_labels(t_instruction *instructions,
-							t_label *labels, header_t *header)
+t_return			link_labels(t_instruction *instructions, t_label *labels,
+								t_header *header)
 {
-	t_instruction			*tmp;
-	t_token					*tok;
-	t_label					*res;
+	t_instruction	*tmp;
+	t_token			*tok;
+	t_label			*res;
 
 	tmp = instructions;
 	while (tmp)

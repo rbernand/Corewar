@@ -6,7 +6,7 @@
 /*   By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/17 14:01:44 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/11 17:40:55 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/11 20:29:55 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,35 @@
 #include <list.h>
 #include <asm.h>
 
-static t_return				set_header_name(const char *line, header_t *header,
-							t_instruction **instructions, t_label **labels)
+static t_return			set_header_name(const char *line, t_header *header,
+										t_instruction **instructions,
+										t_label **labels)
 {
 	(void)instructions;
 	(void)labels;
 	if (header->prog_name[0] != 0)
 		return (PERROR("duplicate name"));
-	strncpy(header->prog_name, ft_jumpstr(line + NAME_CMD_LEN) + 1, PROG_NAME_LENGTH);
+	strncpy(header->prog_name, ft_jumpstr(line + NAME_CMD_LEN) + 1,
+			PROG_NAME_LENGTH);
 	header->prog_name[ft_strlen(ft_jumpstr(line + NAME_CMD_LEN) + 1) - 1] = 0;
 	return (_SUCCESS);
 }
 
-static t_return				set_header_comment(const char *line, header_t *header,
-							t_instruction **instructions, t_label **labels)
+static t_return			set_header_comment(const char *line, t_header *header,
+											t_instruction **instructions,
+											t_label **labels)
 {
 	(void)instructions;
 	(void)labels;
 	if (header->comment[0] != 0)
 		return (PERROR("duplicate comment"));
-	strncpy(header->comment, ft_jumpstr(line + COMMENT_CMD_LEN) + 1, COMMENT_LENGTH);
+	strncpy(header->comment, ft_jumpstr(line + COMMENT_CMD_LEN) + 1,
+			COMMENT_LENGTH);
 	header->comment[ft_strlen(ft_jumpstr(line + COMMENT_CMD_LEN) + 1) - 1] = 0;
 	return (_SUCCESS);
 }
 
-static t_bool				is_labelled(const char *line)
+static t_bool			is_labelled(const char *line)
 {
 	size_t				i;
 
@@ -55,10 +59,8 @@ static t_bool				is_labelled(const char *line)
 	return (_FALSE);
 }
 
-enum e_parse_state			get_state(const char *line)
+enum e_parse_state		get_state(const char *line)
 {
-	/* TEST if line not empty"
-	 */
 	if (ft_strnequ(line, NAME_CMD_STRING, NAME_CMD_LEN)
 			&& ft_iswhite(line[NAME_CMD_LEN]))
 		return (_PARSE_NAME);
@@ -72,9 +74,10 @@ enum e_parse_state			get_state(const char *line)
 	return (_PARSE_ERROR);
 }
 
-static t_return				add_label(const char *line, header_t *header,
-							t_instruction **instructions, t_label **labels)
-{	
+static t_return			add_label(const char *line, t_header *header,
+									t_instruction **instructions,
+									t_label **labels)
+{
 	t_label				*new;
 
 	(void)header;
@@ -92,13 +95,13 @@ static t_return				add_label(const char *line, header_t *header,
 	return (_SUCCESS);
 }
 
-t_return					parse(int fd, header_t *header,
-							t_instruction **instructions, t_label **labels)
+t_return				parse(int fd, t_header *header,
+								t_instruction **instructions, t_label **labels)
 {
-	char					*line;
-	enum e_parse_state		state;
-	char					*tmp;
-	t_parse_fct				parse_line[_NB_PARSE_STATE] = {
+	char				*line;
+	enum e_parse_state	state;
+	char				*tmp;
+	static t_parse_fct	parse_line[_NB_PARSE_STATE] = {
 		&set_header_name,
 		&set_header_comment,
 		&add_label,

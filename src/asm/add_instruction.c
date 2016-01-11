@@ -6,7 +6,7 @@
 /*   By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/17 16:45:09 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/11 18:49:50 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/11 20:19:23 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static size_t		sizeof_instruction(t_instruction *self)
 	int				size_params;
 	t_token			*tokens;
 
-	size_params  = 0;
+	size_params = 0;
 	tokens = self->tokens;
 	while (tokens)
 	{
@@ -86,12 +86,12 @@ static void			write_instruction(t_instruction *self, int fd)
 	}
 }
 
-t_return			add_instruction(const char *line, header_t *header,
+t_return			add_instruction(const char *line, t_header *header,
 					t_instruction **instructions, t_label **labels)
 {
-	t_instruction			*new;
-	char					**params;
-	t_instruction			*prev;
+	t_instruction	*new;
+	char			**params;
+	t_instruction	*prev;
 
 	new = NEW_LIST(t_instruction);
 	if (LIST_BACK(*labels)
@@ -102,19 +102,17 @@ t_return			add_instruction(const char *line, header_t *header,
 	new->op_code = get_op_code(ft_jumpstr(line));
 	new->op_data = get_op_by_id(new->op_code);
 	params = ft_strsplit(ft_jumpword(line), SEPARATOR_CHAR);
-	ft_putendl(line);
 	new->octet_code = get_octet_code((const char **)params,
 		new->op_data->allowed_args);
 	if (new->octet_code == 255)
 	{
 		free(new);
-		ft_putendl(line);
 		return (PERROR("invalid parameters"));
 	}
 	new->tokens = store_params(params);
 	ft_tabdel(&params);
 	prev = (t_instruction *)LIST_BACK(*instructions);
-	new->position = prev == 0 ? 0 : prev->position + sizeof_instruction(prev);
+	new->position = (!prev ? 0 : prev->position + sizeof_instruction(prev));
 	PUSH_BACK(instructions, new);
 	header->prog_size += sizeof_instruction(new);
 	return (_SUCCESS);

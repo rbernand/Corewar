@@ -6,7 +6,7 @@
 /*   By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/19 11:32:47 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/11 17:56:22 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/11 20:31:51 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <libft.h>
 #include <list.h>
 #include <unistd.h>
-
 
 static void		write_reg(t_token *self, int fd, char is_short)
 {
@@ -55,13 +54,12 @@ static void		write_ind(t_token *self, int fd, char is_short)
 	/* } */
 }
 
-
 t_token			*store_params(char **params)
 {
-	t_token			*lst;
-	t_token			*new;
-	size_t			i;
-	void			(*write_fct[3])(t_token *, int, char) = {
+	t_token		*lst;
+	t_token		*new;
+	size_t		i;
+	static void	(*write_fct[3])(t_token *, int, char) = {
 		&write_reg,
 		&write_dir,
 		&write_ind,
