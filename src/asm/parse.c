@@ -6,7 +6,7 @@
 /*   By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/17 14:01:44 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/11 17:40:55 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/11 20:29:06 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ static t_bool				is_labelled(const char *line)
 
 enum e_parse_state			get_state(const char *line)
 {
-	/* TEST if line not empty"
-	 */
 	if (ft_strnequ(line, NAME_CMD_STRING, NAME_CMD_LEN)
 			&& ft_iswhite(line[NAME_CMD_LEN]))
 		return (_PARSE_NAME);
