@@ -6,7 +6,7 @@
 /*   By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/17 14:01:44 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/11 14:24:53 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/11 17:40:55 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,26 @@
 #include <asm.h>
 
 static t_return				set_header_name(const char *line, header_t *header,
-							t_instruction **instructions)
+							t_instruction **instructions, t_label **labels)
 {
 	(void)instructions;
-	/*
-	 * Handle quote qround text
-	 */
+	(void)labels;
 	if (header->prog_name[0] != 0)
 		return (PERROR("duplicate name"));
-	strncpy(header->prog_name, ft_jumpstr(line + NAME_CMD_LEN), PROG_NAME_LENGTH);
+	strncpy(header->prog_name, ft_jumpstr(line + NAME_CMD_LEN) + 1, PROG_NAME_LENGTH);
+	header->prog_name[ft_strlen(ft_jumpstr(line + NAME_CMD_LEN) + 1) - 1] = 0;
 	return (_SUCCESS);
 }
 
 static t_return				set_header_comment(const char *line, header_t *header,
-							t_instruction **instructions)
+							t_instruction **instructions, t_label **labels)
 {
 	(void)instructions;
+	(void)labels;
 	if (header->comment[0] != 0)
 		return (PERROR("duplicate comment"));
-	strncpy(header->comment, ft_jumpstr(line + COMMENT_CMD_LEN), COMMENT_LENGTH);
+	strncpy(header->comment, ft_jumpstr(line + COMMENT_CMD_LEN) + 1, COMMENT_LENGTH);
+	header->comment[ft_strlen(ft_jumpstr(line + COMMENT_CMD_LEN) + 1) - 1] = 0;
 	return (_SUCCESS);
 }
 
@@ -72,24 +73,31 @@ enum e_parse_state			get_state(const char *line)
 }
 
 static t_return				add_label(const char *line, header_t *header,
-							t_instruction **instructions)
-{
-	t_instruction		*ins;
+							t_instruction **instructions, t_label **labels)
+{	
+	t_label				*new;
 
-		(void)header;
-	if (add_instruction(ft_strchr(line, LABEL_CHAR) + 1, header, instructions)
-			== _ERR)
-		return (PERROR("Cannot create instruction with label"));
-	ins = (t_instruction *)LIST_BACK((*instructions));
-	ins->label = ft_strcdup(line, LABEL_CHAR);
+	(void)header;
+	new = NEW_LIST(t_label);
+	PUSH_BACK(labels, new);
+	new->name = ft_strcdup(line, LABEL_CHAR);
+	if (line[ft_strlen(line) - 1] != LABEL_CHAR)
+	{
+		if (add_instruction(ft_strchr(line, LABEL_CHAR) + 1,
+					header, instructions, labels)
+				== _ERR)
+			return (PERROR("Cannot create instruction with label"));
+		new->instruction = (t_instruction *)LIST_BACK((*instructions));
+	}
 	return (_SUCCESS);
 }
 
 t_return					parse(int fd, header_t *header,
-							t_instruction **instructions/*, t_instruction *labels*/)
+							t_instruction **instructions, t_label **labels)
 {
 	char					*line;
 	enum e_parse_state		state;
+	char					*tmp;
 	t_parse_fct				parse_line[_NB_PARSE_STATE] = {
 		&set_header_name,
 		&set_header_comment,
@@ -100,9 +108,12 @@ t_return					parse(int fd, header_t *header,
 	line = NULL;
 	while (get_next_line(fd, &line) > 0)
 	{
+		tmp = ft_strcdup(line, COMMENT_CHAR);
+		free(line);
+		line = ft_strtrim(tmp);
 		if (line[0] && (state = get_state(line)) != _PARSE_ERROR)
 		{
-			if (parse_line[state](line, header, instructions) == _ERR)
+			if (parse_line[state](line, header, instructions, labels) == _ERR)
 				return (PERROR("Parsing Error."));
 		}
 		free(line);

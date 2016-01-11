@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2016/01/11 13:10:01 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/11 16:00:11 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ extern t_op						op_tab[17];
 # define PROG_NAME_LENGTH		(128)
 # define COMMENT_LENGTH			(2048)
 # define COREWAR_EXEC_MAGIC		0xea83f3
-
+# define COREWAR_EXEC_MAGIC_R	0x00f383ea
 typedef struct		header_s
 {
   unsigned int		magic;

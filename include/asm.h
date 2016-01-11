@@ -6,7 +6,7 @@
 /*   By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/16 18:35:00 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/11 14:42:38 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/11 19:14:20 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <op.h>
 #include <libft.h>
 
-#define UNUSED(X)			(__attribute__((__unused__)) X)
+#define UNUSED(X)			(__attribute__((__unused__)) (X))
 
 # define STRLEN(X)			((sizeof(X) / sizeof((X)[0])) - 1)
 
@@ -30,7 +30,7 @@ typedef struct s_instruction	t_instruction;
 typedef struct s_label			t_label;
 
 typedef t_return				(*t_parse_fct)(const char *, header_t *,
-								t_instruction **);
+								t_instruction **, t_label **);
 enum							e_parse_state
 {
 	_PARSE_ERROR = -1,
@@ -50,6 +50,13 @@ enum							e_token_type
 	_NB_TOKEN_TYPE
 };
 
+struct							s_label
+{
+	t_label						*next;
+	char						*name;
+	t_instruction				*instruction;
+};
+
 struct							s_token
 {
 	t_token					*next;
@@ -63,7 +70,6 @@ struct							s_token
 struct							s_instruction
 {
 	t_instruction			*next;
-	char					*label;
 	t_token					*tokens;
 	unsigned char			octet_code;
 	unsigned char			op_code;
@@ -73,15 +79,18 @@ struct							s_instruction
 	void					(*write)(t_instruction *, int);
 };
 
-t_return			parse(int fd, header_t *header, t_instruction **instructions);
+t_return			parse(int fd, header_t *header, t_instruction **instructions,
+					t_label **labels);
 int					get_octet_code(const char **parameters,
 					t_arg_type allowed_args[MAX_ARGS_NUMBER]);
 t_bool				is_correct_label(const char *label);
 t_return			add_instruction(const char *line, header_t *header,
-					t_instruction **instructions);
+					t_instruction **instructions, t_label **labels);
 t_token				*store_params(char **params);
-t_return			link_labels(t_instruction *instructions);
+t_return			link_labels(t_instruction *ins, t_label *labels,
+					header_t *header);
 
+void				write_header(int fd, header_t *header);
 void				put_hexa(const unsigned char c);
 t_op				*get_op_by_id(size_t id);
 

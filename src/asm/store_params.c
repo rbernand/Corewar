@@ -6,34 +6,14 @@
 /*   By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/19 11:32:47 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/11 14:54:26 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/11 17:56:22 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <asm.h>
+#include <libft.h>
 #include <list.h>
 #include <unistd.h>
-
-
-
-
-
-#include <stdio.h>
-#include <stdio.h>
-#include <stdio.h>
-#include <stdio.h>
-#include <stdio.h>
-
-/* static int		swap_endian(int value) */
-/* { */
-/* 	static int				out; */
-
-/* 	out = value << 24; */
-/* 	out |= ((value << 8) & 0x00ff0000); */
-/* 	out |= ((value >> 8) & 0x0000ff00); */
-/* 	out |= (value >> 24); */
-/* 	return (out); */
-/* } */
 
 
 static void		write_reg(t_token *self, int fd, char is_short)
@@ -60,18 +40,19 @@ static void		write_dir(t_token *self, int fd, char is_short)
 
 static void		write_ind(t_token *self, int fd, char is_short)
 {
-	if (is_short)
+	(void)is_short;
+	/* if (is_short) */
 	{
 		write(fd, (char *)&self->value + 1, 1);
 		write(fd, (char *)&self->value + 0, 1);
 	}
-	else
-	{
-		write(fd, (char *)&self->value + 3, 1);
-		write(fd, (char *)&self->value + 2, 1);
-		write(fd, (char *)&self->value + 1, 1);
-		write(fd, (char *)&self->value, 1);
-	}
+	/* else */
+	/* { */
+		/* write(fd, (char *)&self->value + 3, 1); */
+		/* write(fd, (char *)&self->value + 2, 1); */
+		/* write(fd, (char *)&self->value + 1, 1); */
+		/* write(fd, (char *)&self->value, 1); */
+	/* } */
 }
 
 
@@ -91,28 +72,28 @@ t_token			*store_params(char **params)
 	while (i < MAX_ARGS_NUMBER - 1 && params[i])
 	{
 		new = NEW_LIST(t_token);
-		if (params[i][0] == 'r')
+		if (ft_jumpstr(params[i])[0] == 'r')
 		{
 			new->type_id = _TOKEN_REG;
-			new->value = ft_atoi(params[i] + 1);
+			new->value = ft_atoi(ft_jumpstr(params[i]) + 1);
 			new->write = write_fct[0];
 		}
-		else if (params[i][0] == DIRECT_CHAR)
+		else if (ft_jumpstr(params[i])[0] == DIRECT_CHAR)
 		{
 			new->type_id = _TOKEN_DIR;
-			if (params[i][1] == LABEL_CHAR)
-				new->label_name = ft_strdup(params[i] + 2);
+			if (ft_jumpstr(params[i])[1] == LABEL_CHAR)
+				new->label_name = ft_strdup(ft_jumpstr(params[i]) + 2);
 			else
-				new->value = ft_atoi(params[i] + 1);
+				new->value = ft_atoi(ft_jumpstr(params[i]) + 1);
 			new->write = write_fct[1];
 		}
 		else
 		{
 			new->type_id = _TOKEN_IND;
-			if (params[i][1] == LABEL_CHAR)
-				new->label_name = ft_strdup(params[i] + 2);
+			if (ft_jumpstr(params[i])[1] == LABEL_CHAR)
+				new->label_name = ft_strdup(ft_jumpstr(params[i]) + 1);
 			else
-				new->value = ft_atoi(params[i] + 1);
+				new->value = ft_atoi(ft_jumpstr(params[i]));
 			new->write = write_fct[2];
 		}
 		PUSH_BACK(&lst, new);

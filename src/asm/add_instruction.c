@@ -6,7 +6,7 @@
 /*   By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/17 16:45:09 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/11 14:57:02 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/11 18:49:50 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,8 @@ static int			get_op_code(const char *str)
 	return (-1);
 }
 
-static void				dump_instruction(t_instruction *self)
+static void			dump_instruction(t_instruction *self)
 {
-	if (self->label)
-		ft_putendl(self->label);
 	ft_putstr("op_id: ");
 	ft_putendl(self->op_data->name);
 	ft_putstr("offset: ");
@@ -51,8 +49,6 @@ static void				dump_instruction(t_instruction *self)
 	}
 }
 
-/* Assert size selon le fichier .h 
- */
 static size_t		sizeof_instruction(t_instruction *self)
 {
 	int				size_params;
@@ -85,30 +81,34 @@ static void			write_instruction(t_instruction *self, int fd)
 	tokens = self->tokens;
 	while (tokens)
 	{
-		if (tokens->write)
-			tokens->write(tokens, fd, self->op_data->is_short);
+		tokens->write(tokens, fd, self->op_data->is_short);
 		tokens = tokens->next;
 	}
 }
 
-t_return			add_instruction(const char *line, header_t UNUSED(*header),
-					t_instruction **instructions)
+t_return			add_instruction(const char *line, header_t *header,
+					t_instruction **instructions, t_label **labels)
 {
 	t_instruction			*new;
 	char					**params;
 	t_instruction			*prev;
 
 	new = NEW_LIST(t_instruction);
+	if (LIST_BACK(*labels)
+			&& ((t_label *)LIST_BACK(*labels))->instruction == NULL)
+		((t_label *)LIST_BACK(*labels))->instruction = new;
 	new->dump = &dump_instruction;
 	new->write = &write_instruction;
 	new->op_code = get_op_code(ft_jumpstr(line));
 	new->op_data = get_op_by_id(new->op_code);
 	params = ft_strsplit(ft_jumpword(line), SEPARATOR_CHAR);
+	ft_putendl(line);
 	new->octet_code = get_octet_code((const char **)params,
 		new->op_data->allowed_args);
 	if (new->octet_code == 255)
 	{
 		free(new);
+		ft_putendl(line);
 		return (PERROR("invalid parameters"));
 	}
 	new->tokens = store_params(params);
@@ -116,5 +116,6 @@ t_return			add_instruction(const char *line, header_t UNUSED(*header),
 	prev = (t_instruction *)LIST_BACK(*instructions);
 	new->position = prev == 0 ? 0 : prev->position + sizeof_instruction(prev);
 	PUSH_BACK(instructions, new);
+	header->prog_size += sizeof_instruction(new);
 	return (_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/16 18:10:51 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/11 14:55:38 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/11 19:14:01 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,18 +48,19 @@ static int			open_output_file(const char *name)
 	ft_strncat(cor_file, name, len - 2);
 	ft_strcat(cor_file, COR_EXTENSION);
 	ft_putendl(cor_file);
-	fd = open(cor_file, O_WRONLY | O_CREAT, S_IRWXU);
+	fd = open(cor_file, O_WRONLY | O_TRUNC | O_CREAT, S_IRWXU);
 	free(cor_file);
 	return (fd);
 }
 
-static t_return		write_cor(char *filename, t_instruction *instructions)
+static t_return		write_cor(char *filename, t_instruction *instructions,
+					header_t *header)
 {
 	int				fd;
 
-	(void)instructions;
 	if ((fd = open_output_file(filename)) < 0)
 		return (PERROR("Canont create output file"));
+	write_header(fd, header);
 	while (instructions)
 	{
 		instructions->write(instructions, fd);
@@ -69,30 +70,40 @@ static t_return		write_cor(char *filename, t_instruction *instructions)
 	return (_SUCCESS);
 }
 
+#include <stdio.h>
 int					main(int ac, char **av)
 {
 	int					fd;
 	header_t			header;
 	t_instruction		*instructions;
+	t_label				*labels;
+	t_label				*tmp;
 
 	if (ac != 2)
 		return (print_usage());
 	if ((fd = open_input_file(av[1])) < 0)
 		return (PERROR("Unable to open file."));
 	ft_bzero(&header, sizeof(header_t));
-	header.magic = sizeof(header_t);
+	header.magic = COREWAR_EXEC_MAGIC;
 	instructions = NULL;
-	parse(fd, &header, &instructions);
+	labels = NULL;
+	parse(fd, &header, &instructions, &labels);
 	close(fd);
-	t_instruction *tmp;
-	tmp = instructions;
-	while (tmp)
+	tmp = labels;
+	while(labels)
 	{
-		tmp->dump(tmp);
-		tmp = tmp->next;
+		printf("%s %p\n", labels->name, labels->instruction);
+		labels=labels->next;
 	}
-	if (link_labels(instructions) == _ERR)
+	labels = tmp;
+	if (link_labels(instructions, labels, &header) == _ERR)
 		return (PERROR("error with label"));
-	write_cor(av[1], instructions);
+	write_cor(av[1], instructions, &header);
+	/* while (instructions) */
+	/* { */
+	/* 	instructions->dump(instructions); */
+		/* instructions = instructions->next; */
+	/* } */
+	ft_putnbr(((t_instruction *)LIST_BACK(instructions))->position);
 	return (0);
 }
