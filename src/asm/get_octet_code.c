@@ -6,7 +6,7 @@
 /*   By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/17 14:57:26 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/11 20:23:22 by erobert          ###   ########.fr       */
+/*   Updated: 2016/01/12 13:00:27 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static t_bool		is_register(const char *param)
 	size_t			i;
 
 	reg_value = 0;
-	if (!(param[0] == 'r'))
+	if (param[0] != 'r')
 		return (_FALSE);
 	i = 0;
 	while (param[++i])
@@ -89,12 +89,12 @@ int					get_octet_code(const char **parameters,
 	i = 0;
 	while (i < MAX_ARGS_NUMBER - 1 && parameters[i])
 	{
-		if (is_register(ft_jumpstr(parameters[i])) && allowed_args[i] & T_REG)
+		if (is_register(parameters[i]) && allowed_args[i] & T_REG)
 			octet_code += REG_CODE;
-		else if (is_indirect(ft_jumpstr(parameters[i])) &&
+		else if (is_indirect(parameters[i]) &&
 					allowed_args[i] & T_IND)
 			octet_code += IND_CODE;
-		else if (is_direct(ft_jumpstr(parameters[i])) &&
+		else if (is_direct(parameters[i]) &&
 					allowed_args[i] & T_DIR)
 			octet_code += DIR_CODE;
 		else

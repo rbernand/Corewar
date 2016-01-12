@@ -6,13 +6,12 @@
 /*   By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/17 14:01:44 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/11 20:29:55 by erobert          ###   ########.fr       */
+/*   Updated: 2016/01/12 14:50:13 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <libft.h>
-#include <list.h>
 #include <asm.h>
 
 static t_return			set_header_name(const char *line, t_header *header,
@@ -72,27 +71,6 @@ enum e_parse_state		get_state(const char *line)
 	else
 		return (_PARSE_INSTRUCTION);
 	return (_PARSE_ERROR);
-}
-
-static t_return			add_label(const char *line, t_header *header,
-									t_instruction **instructions,
-									t_label **labels)
-{
-	t_label				*new;
-
-	(void)header;
-	new = NEW_LIST(t_label);
-	PUSH_BACK(labels, new);
-	new->name = ft_strcdup(line, LABEL_CHAR);
-	if (line[ft_strlen(line) - 1] != LABEL_CHAR)
-	{
-		if (add_instruction(ft_strchr(line, LABEL_CHAR) + 1,
-					header, instructions, labels)
-				== _ERR)
-			return (PERROR("Cannot create instruction with label"));
-		new->instruction = (t_instruction *)LIST_BACK((*instructions));
-	}
-	return (_SUCCESS);
 }
 
 t_return				parse(int fd, t_header *header,

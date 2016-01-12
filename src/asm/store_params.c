@@ -6,7 +6,7 @@
 /*   By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/19 11:32:47 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/11 20:31:51 by erobert          ###   ########.fr       */
+/*   Updated: 2016/01/12 12:39:32 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,28 +70,28 @@ t_token			*store_params(char **params)
 	while (i < MAX_ARGS_NUMBER - 1 && params[i])
 	{
 		new = NEW_LIST(t_token);
-		if (ft_jumpstr(params[i])[0] == 'r')
+		if (params[i][0] == 'r')
 		{
 			new->type_id = _TOKEN_REG;
-			new->value = ft_atoi(ft_jumpstr(params[i]) + 1);
+			new->value = ft_atoi(params[i] + 1);
 			new->write = write_fct[0];
 		}
-		else if (ft_jumpstr(params[i])[0] == DIRECT_CHAR)
+		else if (params[i][0] == DIRECT_CHAR)
 		{
 			new->type_id = _TOKEN_DIR;
-			if (ft_jumpstr(params[i])[1] == LABEL_CHAR)
-				new->label_name = ft_strdup(ft_jumpstr(params[i]) + 2);
+			if (params[i][1] == LABEL_CHAR)
+				new->label_name = ft_strdup(params[i] + 2);
 			else
-				new->value = ft_atoi(ft_jumpstr(params[i]) + 1);
+				new->value = ft_atoi(params[i] + 1);
 			new->write = write_fct[1];
 		}
 		else
 		{
 			new->type_id = _TOKEN_IND;
-			if (ft_jumpstr(params[i])[1] == LABEL_CHAR)
-				new->label_name = ft_strdup(ft_jumpstr(params[i]) + 1);
+			if (params[i][1] == LABEL_CHAR)
+				new->label_name = ft_strdup(params[i] + 1);
 			else
-				new->value = ft_atoi(ft_jumpstr(params[i]));
+				new->value = ft_atoi(params[i]);
 			new->write = write_fct[2];
 		}
 		PUSH_BACK(&lst, new);

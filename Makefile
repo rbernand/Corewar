@@ -6,7 +6,7 @@
 #    By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/10/16 15:08:59 by rbernand          #+#    #+#              #
-#    Updated: 2016/01/11 15:30:36 by rbernand         ###   ########.fr        #
+#    Updated: 2016/01/12 14:49:28 by erobert          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,14 +33,16 @@ SRC_COMMON=op.c \
 			list_push_front.c \
 			list_push_back.c \
 			list_iter.c \
-			list_back.c
+			list_back.c \
+			ft_strip_chrs.c
 SRC_ASM=main.c \
 		parse.c \
 		get_octet_code.c \
 		is_correct_label.c \
+		add_label.c \
 		add_instruction.c \
 		put_hexa.c \
-		get_op_by_id.c \
+		get_instruction_param.c \
 		store_params.c \
 		link_labels.c \
 		write_header.c
