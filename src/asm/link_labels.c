@@ -6,55 +6,48 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:54:02 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/11 19:18:54 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/12 14:45:12 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <asm.h>
-#include <stdio.h>
 
 static t_label		*find_label(const char *name, t_label *labels)
 {
-	while(labels && ft_strcmp(name, labels->name) != 0)
-	{
-		/* ft_putendl(labels->name); */
+	while (labels && ft_strcmp(name, labels->name) != 0)
 		labels = labels->next;
-	}
 	while (labels && labels->next && labels->instruction == NULL)
 		labels = labels->next;
 	return (labels);
 }
 
-t_return					link_labels(t_instruction *instructions,
-							t_label *labels, header_t *header)
+t_return			link_labels(t_instruction *ins, t_label *labels,
+								t_header *header)
 {
-	t_instruction			*tmp;
-	t_token					*tok;
-	t_label					*res;
+	t_token			*tok;
+	t_label			*res;
 
-	tmp = instructions;
-	while (tmp)
+	while (ins)
 	{
-		tok = tmp->tokens;
+		tok = ins->tokens;
 		while (tok)
 		{
 			if (tok->label_name)
 			{
-				ft_putendl(tok->label_name);
 				res = find_label(tok->label_name, labels);
 				if (res == NULL)
 					return (PERROR("invalid label name"));
 				else if (res->instruction == NULL)
-					tok->value = header->prog_size - tmp->position;
+					tok->value = header->prog_size - ins->position;
 				else if (tok->type_id == _TOKEN_DIR)
-					tok->value = res->instruction->position - tmp->position;
+					tok->value = res->instruction->position - ins->position;
 				else if (tok->type_id == _TOKEN_IND)
 					tok->value = res->instruction->position;
 			}
 			tok = tok->next;
 		}
-		tmp = tmp->next;
+		ins = ins->next;
 	}
 	return (_SUCCESS);
 }

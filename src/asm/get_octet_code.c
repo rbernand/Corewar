@@ -6,16 +6,15 @@
 /*   By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/17 14:57:26 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/11 18:52:56 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/12 13:00:27 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <asm.h>
 
-#include <stdio.h>
-static t_bool				is_direct(const char *param)
+static t_bool		is_direct(const char *param)
 {
-	size_t				i;
+	size_t			i;
 
 	if (!(param[0] == DIRECT_CHAR))
 		return (_FALSE);
@@ -31,10 +30,10 @@ static t_bool				is_direct(const char *param)
 	return (_TRUE);
 }
 
-static t_bool				is_indirect(const char *param)
+static t_bool		is_indirect(const char *param)
 {
-	size_t				value;
-	size_t				i;
+	size_t			value;
+	size_t			i;
 	int				neg;
 
 	value = 0;
@@ -59,13 +58,13 @@ static t_bool				is_indirect(const char *param)
 	return (_TRUE);
 }
 
-static t_bool				is_register(const char *param)
+static t_bool		is_register(const char *param)
 {
-	unsigned char				reg_value;
-	size_t						i;
+	unsigned char	reg_value;
+	size_t			i;
 
 	reg_value = 0;
-	if (!(param[0] == 'r'))
+	if (param[0] != 'r')
 		return (_FALSE);
 	i = 0;
 	while (param[++i])
@@ -80,21 +79,23 @@ static t_bool				is_register(const char *param)
 	return (_TRUE);
 }
 
-int						get_octet_code(const char **parameters,
-						t_arg_type allowed_args[MAX_ARGS_NUMBER])
+int					get_octet_code(const char **parameters,
+									t_arg_type allowed_args[MAX_ARGS_NUMBER])
 {
-	unsigned char			octet_code;
-	size_t					i;
+	unsigned char	octet_code;
+	size_t			i;
 
 	octet_code = 0;
 	i = 0;
 	while (i < MAX_ARGS_NUMBER - 1 && parameters[i])
 	{
-		if (is_register(ft_jumpstr(parameters[i])) && allowed_args[i] & T_REG)
+		if (is_register(parameters[i]) && allowed_args[i] & T_REG)
 			octet_code += REG_CODE;
-		else if (is_indirect(ft_jumpstr(parameters[i])) && allowed_args[i] & T_IND)
+		else if (is_indirect(parameters[i]) &&
+					allowed_args[i] & T_IND)
 			octet_code += IND_CODE;
-		else if (is_direct(ft_jumpstr(parameters[i])) && allowed_args[i] & T_DIR)
+		else if (is_direct(parameters[i]) &&
+					allowed_args[i] & T_DIR)
 			octet_code += DIR_CODE;
 		else
 			return (-1);

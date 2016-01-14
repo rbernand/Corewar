@@ -6,7 +6,7 @@
 #    By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/10/16 15:08:59 by rbernand          #+#    #+#              #
-#    Updated: 2016/01/14 12:06:54 by rbernand         ###   ########.fr        #
+#    Updated: 2016/01/14 13:10:12 by rbernand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ SRC_COMMON=\
 	list_push_back.c \
 	list_iter.c \
 	list_back.c \
+	ft_strip_chrs.c \
 	swap_uint.c
 SRC_ASM=\
 	main.c \

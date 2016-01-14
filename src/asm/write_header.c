@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 15:23:52 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/11 16:04:54 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/11 20:15:17 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ static int		swap_endian(int value)
 	return (out);
 }
 
-void			write_header(int fd, header_t *header)
+void			write_header(int fd, t_header *header)
 {
 	header->magic = swap_endian(header->magic);
 	header->prog_size = swap_endian(header->prog_size);
-	write(fd, header, sizeof(header_t));
+	write(fd, header, sizeof(t_header));
 }

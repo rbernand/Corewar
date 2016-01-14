@@ -35,3 +35,9 @@
 *.swp
 
 include/libft.h
+asm
+corewar
+bin/
+asm
+corewar
+bin/

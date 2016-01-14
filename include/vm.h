@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:56:35 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 12:11:51 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/14 13:14:37 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ enum								e_action
 struct								s_action
 {
 	char				*name;
-	enum e_action		_type;
+	enum e_action		type;
 	t_return			(*load)();
 	t_return			(*exec)();
 };
@@ -70,10 +70,11 @@ struct								s_player
 	t_process			process;
 };
 
-t_return				parse_argument(int ac, char **av,
-						t_player players[MAX_PLAYERS], int *cycles_to_dump);
-t_return				load_players(t_player players[MAX_PLAYERS]);
-void					*alloc_memory(void);
-void					dump_memory(void *ptr);
+t_return							parse_argument(int ac, char **av,
+									t_player players[MAX_PLAYERS],
+									int *cycles_to_dump);
+t_return							load_players(t_player players[MAX_PLAYERS]);
+void								*alloc_memory(void);
+void								dump_memory(void *ptr);
 
 #endif
