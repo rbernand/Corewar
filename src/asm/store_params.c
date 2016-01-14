@@ -6,7 +6,7 @@
 /*   By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/19 11:32:47 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 14:02:53 by erobert          ###   ########.fr       */
+/*   Updated: 2016/01/14 15:22:10 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,8 @@ static void		write_dir(t_token *self, int fd, char is_short)
 static void		write_ind(t_token *self, int fd, char is_short)
 {
 	(void)is_short;
-	/* if (is_short) */
-	{
-		write(fd, (char *)&self->value + 1, 1);
-		write(fd, (char *)&self->value + 0, 1);
-	}
-	/* else */
-	/* { */
-		/* write(fd, (char *)&self->value + 3, 1); */
-		/* write(fd, (char *)&self->value + 2, 1); */
-		/* write(fd, (char *)&self->value + 1, 1); */
-		/* write(fd, (char *)&self->value, 1); */
-	/* } */
+	write(fd, (char *)&self->value + 1, 1);
+	write(fd, (char *)&self->value + 0, 1);
 }
 
 static void		get_token_params(t_token *new, char *params,
