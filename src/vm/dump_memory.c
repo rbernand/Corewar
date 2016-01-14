@@ -6,11 +6,11 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 12:01:43 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 12:23:01 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/14 13:21:48 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <op.h>
+#include "common.h"
 #include "libft.h"
 
 static char			convert(unsigned char c)

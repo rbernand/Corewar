@@ -6,7 +6,7 @@
 #    By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/10/16 15:08:59 by rbernand          #+#    #+#              #
-#    Updated: 2016/01/14 13:10:12 by rbernand         ###   ########.fr        #
+#    Updated: 2016/01/14 13:19:32 by rbernand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ DIRLIB=lib/
 DIRSRC=src/
 DIRBIN=bin/
 DIRCOMMON=common/
-DIRVM=corewar/
+DIRVM=vm/
 DIRASM=asm/
 SRC_COMMON=\
 	op.c \
@@ -39,15 +39,16 @@ SRC_COMMON=\
 	swap_uint.c
 SRC_ASM=\
 	main.c \
+	add_label.c \
 	parse.c \
 	get_octet_code.c \
 	is_correct_label.c \
 	add_instruction.c \
 	put_hexa.c \
-	get_op_by_id.c \
 	store_params.c \
 	link_labels.c \
-	write_header.c
+	write_header.c \
+	get_instruction_param.c
 SRC_VM=\
 	main.c \
 	parse_argument.c \

@@ -6,11 +6,11 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:54:54 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 12:25:53 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/14 13:20:59 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <op.h>
+#include "common.h"
 #include <vm.h>
 #include <libft.h>
 

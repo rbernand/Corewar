@@ -6,13 +6,13 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:51:06 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 12:26:19 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/14 13:20:05 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <op.h>
-#include <vm.h>
-#include <libft.h>
+#include "common.h"
+#include "vm.h"
+#include "libft.h"
 
 static t_return			print_usage(void)
 {

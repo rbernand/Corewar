@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 11:12:35 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 12:28:00 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/14 13:21:27 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_return			load_players(t_player players[MAX_PLAYERS])
 	int				i;
 	int				ret;
 
-	(void)init_process();
+	(void)init_process;
 
 	i = 0;
 	while (i < MAX_PLAYERS)

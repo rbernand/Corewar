@@ -6,19 +6,18 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:56:35 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 13:14:37 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/14 13:20:42 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VM_H
 # define VM_H
 
-# include <op.h>
-# include <libft.h>
+# include "common.h"
+# include "libft.h"
 
 typedef struct s_player				t_player;
 typedef struct s_action				t_action;
-typedef header_t					t_header;
 typedef struct s_process			t_process;
 
 enum								e_action
