@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:51:06 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 13:20:05 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/14 16:36:27 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,14 @@ static t_return			main_loop(t_player players[MAX_PLAYERS],
 	unsigned int				cycles;
 
 	(void)players;
+	(void)cycles_to_dump;
 	cycles = 0;
 	while (1) //(count_alive(players))
 	{
-		if (cycles_to_dump && cycles % cycles_to_dump == 0)
+		/* if (cycles_to_dump && cycles % cycles_to_dump == 0) */
 			dump_memory(memory);; //dump memory
 		cycles++;
+		break;
 	}
 	return (_SUCCESS);
 }
@@ -51,6 +53,8 @@ int						main(int ac, char **av)
 		return (PERROR("alloc_memory: Failed to load VM."));
 	if (load_players(players) == _ERR)
 		return (PERROR("load_players: Error during players initialization."));
+	if (put_players_on_memory(players, memory) == _ERR)
+		return (PERROR("failed during init."));
 	main_loop(players, memory, cycles_to_dump);
 	return (0);
 }

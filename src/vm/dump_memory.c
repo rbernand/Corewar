@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 12:01:43 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 13:21:48 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/14 16:14:18 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,12 @@ static char			convert(unsigned char c)
 
 static void			put_octet(unsigned char c)
 {
+	if (c != 0)
+		ft_putstr("\033[31m");
 	ft_putchar(convert(c / 16));
 	ft_putchar(convert(c % 16));
+	if (c != 0)
+		ft_putstr("\033[0m");
 }
 
 void			dump_memory(void *ptr)

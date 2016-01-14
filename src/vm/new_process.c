@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   alloc_memory.c                                     :+:      :+:    :+:   */
+/*   new_process.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/14 11:08:45 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 16:55:30 by rbernand         ###   ########.fr       */
+/*   Created: 2016/01/14 16:49:25 by rbernand          #+#    #+#             */
+/*   Updated: 2016/01/14 17:09:59 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "list.h"
 #include "vm.h"
 
-void				*alloc_memory(void)
+t_process			*new_process(int pc)
 {
-	void			*ptr;
+	static int			id = 0;
+	t_process			*new;
 
-	ptr = (void *)malloc(MEM_SIZE);
-	if (!ptr)
-		PERROR("malloc: allocation failed.");
-	ft_bzero(ptr, MEM_SIZE);
-	return (ptr);
+	new = NEW_LIST(t_process);
+	new->id = ++id;
+	new->pc = pc;
+	return (new);
 }

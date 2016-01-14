@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:56:35 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 13:20:42 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/14 17:09:20 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,15 @@
 typedef struct s_player				t_player;
 typedef struct s_action				t_action;
 typedef struct s_process			t_process;
+
+enum								e_player
+{
+	_P_EMPTY = -1,
+	_P0,
+	_P1,
+	_P2,
+	_P3,
+};
 
 enum								e_action
 {
@@ -52,9 +61,12 @@ struct								s_action
 
 struct								s_process
 {
+	t_process				*next;
+	unsigned int			id;
 	unsigned char			registers[REG_NUMBER][REG_SIZE];
-	unsigned char			pc[REG_SIZE];
+	unsigned int			pc;
 	unsigned int			carry;
+	t_action				current;
 };
 
 struct								s_player
@@ -65,8 +77,7 @@ struct								s_player
 	int					lives;
 	char				*file_name;
 	t_header			header;
-	t_action			current;
-	t_process			process;
+	t_process			*process;
 };
 
 t_return							parse_argument(int ac, char **av,
@@ -75,5 +86,8 @@ t_return							parse_argument(int ac, char **av,
 t_return							load_players(t_player players[MAX_PLAYERS]);
 void								*alloc_memory(void);
 void								dump_memory(void *ptr);
-
+t_return							put_players_on_memory(
+									t_player players[MAX_PLAYERS],
+									void *memory);
+t_process							*new_process(int offset);
 #endif
