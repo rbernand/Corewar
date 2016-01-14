@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 16:11:30 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 17:01:14 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/14 19:13:14 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ t_return			put_players_on_memory(t_player players[MAX_PLAYERS],
 			nbplayers++;
 		i++;
 	}
+	if (nbplayers == 0)
+		return (PERROR("No players. Noob"));
 	offset = MEM_SIZE / nbplayers;
 	i = 0;
 	while (i < MAX_PLAYERS)

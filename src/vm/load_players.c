@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 11:12:35 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 16:49:02 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/14 19:07:55 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 #include <unistd.h>
 #include "common.h"
 #include "vm.h"
-
-
-#include <stdio.h>
 
 static t_return		check_header(t_header *header)
 {

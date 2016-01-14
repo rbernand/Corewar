@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:51:06 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 17:39:36 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/14 19:07:34 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,12 @@ static t_return			main_loop(t_player players[MAX_PLAYERS],
 	(void)players;
 	(void)cycles_to_dump;
 	cycles = 0;
-	while (1) //(count_alive(players))
+	while (1)
 	{
 		if (cycles_to_dump && cycles % cycles_to_dump == 0)
 			dump_memory(memory);
 		play(players, memory, cycles);
 		cycles++;
-		break;
 	}
 	return (_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:54:54 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 13:35:47 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/14 19:08:27 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@ t_return		parse_argument(int ac, char **av,
 				t_player players[MAX_PLAYERS], int *cycles_to_dump)
 {
 	int				i;
-	int			curs_player = 0;
+	int				curs_player;
 
 	i = 1;
+	curs_player = 0;
 	while (i < ac)
 	{
 		if (ft_strcmp(av[i], "-dump") == 0 && i + 1 == ac)

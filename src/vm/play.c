@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 17:39:41 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 18:59:08 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/14 19:08:38 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,4 +113,3 @@ void			play(t_player players[MAX_PLAYERS], void *memory,
 		}
 	}
 }
-
