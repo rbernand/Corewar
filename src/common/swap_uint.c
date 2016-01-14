@@ -1,20 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   common.h                                           :+:      :+:    :+:   */
+/*   swap_uint.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+        */
+/*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/10/17 17:02:05 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 11:51:00 by rbernand         ###   ########.fr       */
+/*   Created: 2016/01/14 11:44:51 by rbernand          #+#    #+#             */
+/*   Updated: 2016/01/14 11:48:16 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef COMMON_H
-# define COMMON_H
+unsigned int			swap_uint(unsigned int value)
+{
+	unsigned int			out;
 
-#include <op.h>
-
-unsigned int				swap_uint(unsigned int value);
-
-#endif
+	out  = ((value >> 24 ) &  0xff) |
+					((value << 8) & 0xff0000) |
+					((value >> 8) & 0xff00) |
+					((value << 24) & 0xff000000);
+	return (out);
+}

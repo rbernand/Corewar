@@ -6,7 +6,7 @@
 #    By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/10/16 15:08:59 by rbernand          #+#    #+#              #
-#    Updated: 2016/01/11 20:05:54 by rbernand         ###   ########.fr        #
+#    Updated: 2016/01/14 12:06:54 by rbernand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,8 @@ SRC_COMMON=\
 	list_push_front.c \
 	list_push_back.c \
 	list_iter.c \
-	list_back.c
+	list_back.c \
+	swap_uint.c
 SRC_ASM=\
 	main.c \
 	parse.c \
@@ -47,8 +48,11 @@ SRC_ASM=\
 	link_labels.c \
 	write_header.c
 SRC_VM=\
-	   main.c \
-	   parse_argument.c
+	main.c \
+	parse_argument.c \
+	load_players.c \
+	alloc_memory.c \
+	dump_memory.c
 OBJ_ASM=$(SRC_ASM:%.c=$(DIROBJ)$(DIRASM)%.o)
 OBJ_VM=$(SRC_VM:%.c=$(DIROBJ)$(DIRVM)%.o)
 OBJ_COMMON=$(SRC_COMMON:%.c=$(DIROBJ)$(DIRCOMMON)%.o)
@@ -79,7 +83,7 @@ libft:
 	@make -s -C $(LIBFT)
 
 
-$(VM): $(OBJ_VM) $(OBJ_COMON)
+$(VM): $(OBJ_VM) $(OBJ_COMMON)
 	@printf "\r\033[2KCompiling %s\n" $@
 	@$(CC) $(FLAGS) -o $(DIRBIN)$@ $^ -I$(INCLUDES) -L$(DIRLIB) -lft
 	@ln -f $(DIRBIN)$@ $@
