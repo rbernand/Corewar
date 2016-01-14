@@ -6,7 +6,7 @@
 /*   By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/16 18:10:51 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/11 20:13:42 by erobert          ###   ########.fr       */
+/*   Updated: 2016/01/12 11:20:13 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,5 @@ int					main(int ac, char **av)
 	if (link_labels(instructions, labels, &header) == _ERR)
 		return (PERROR("error with label"));
 	write_cor(av[1], instructions, &header);
-	ft_putnbr(((t_instruction *)LIST_BACK(instructions))->position);
 	return (0);
 }
