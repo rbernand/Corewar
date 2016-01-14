@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 13:54:02 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/12 14:45:12 by erobert          ###   ########.fr       */
+/*   Updated: 2016/01/14 15:24:00 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_return			link_labels(t_instruction *ins, t_label *labels,
 				else if (tok->type_id == _TOKEN_DIR)
 					tok->value = res->instruction->position - ins->position;
 				else if (tok->type_id == _TOKEN_IND)
-					tok->value = res->instruction->position;
+					tok->value = res->instruction->position - ins->position;
 			}
 			tok = tok->next;
 		}
