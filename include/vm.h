@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:56:35 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 17:09:20 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/14 18:49:14 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # include "common.h"
 # include "libft.h"
+# include <stdint.h>
+
+# define		SET_PC(X)			((X) % MEM_SIZE)
 
 typedef struct s_player				t_player;
 typedef struct s_action				t_action;
@@ -31,8 +34,8 @@ enum								e_player
 
 enum								e_action
 {
-	_INVALID = -1,
-	_LIVE = 0,
+	_INVALID = 0,
+	_LIVE = 1,
 	_LD,
 	_ST,
 	_ADD,
@@ -51,28 +54,32 @@ enum								e_action
 	_MAX_ACTIONS,
 };
 
-struct								s_action
+typedef t_return					(*t_exec_fct)(t_process *, void *);
+
+union								u_data
 {
-	char				*name;
-	enum e_action		type;
-	t_return			(*load)();
-	t_return			(*exec)();
+	char				raw[sizeof(int64_t)];
+	int64_t				value;
 };
 
 struct								s_process
 {
 	t_process				*next;
 	unsigned int			id;
-	unsigned char			registers[REG_NUMBER][REG_SIZE];
+	int						registers[REG_NUMBER];
 	unsigned int			pc;
 	unsigned int			carry;
-	t_action				current;
+	unsigned int			start;
+	union u_data			params[MAX_ARGS_NUMBER];
+	t_op					*op;
+	t_exec_fct				exec;
 };
 
 struct								s_player
 {
 	int					is_active;
 	char				*name;
+	int					number;
 	int					fd;
 	int					lives;
 	char				*file_name;
@@ -90,4 +97,7 @@ t_return							put_players_on_memory(
 									t_player players[MAX_PLAYERS],
 									void *memory);
 t_process							*new_process(int offset);
+void								play(t_player players[MAX_PLAYERS],
+									void *ptr, unsigned int cycles);
+
 #endif

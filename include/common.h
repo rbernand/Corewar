@@ -6,7 +6,7 @@
 /*   By: erobert <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 20:33:10 by erobert           #+#    #+#             */
-/*   Updated: 2016/01/14 13:13:40 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/14 18:50:10 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef struct					s_op
 	size_t						nb_args;
 	t_arg_type					allowed_args[MAX_ARGS_NUMBER];
 	unsigned char				op_code;
-	size_t						nb_cycle;
+	size_t						nb_cycles;
 	char						*description;
 	unsigned char				has_ocp;
 	unsigned char				is_short;
@@ -82,5 +82,6 @@ typedef struct					s_header
 }								t_header;
 
 unsigned int					swap_uint(unsigned int value);
+t_op							*get_op_by_id(size_t id);
 
 #endif

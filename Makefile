@@ -6,7 +6,7 @@
 #    By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/10/16 15:08:59 by rbernand          #+#    #+#              #
-#    Updated: 2016/01/14 16:56:17 by rbernand         ###   ########.fr        #
+#    Updated: 2016/01/14 18:14:36 by rbernand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,8 @@ SRC_COMMON=\
 	list_iter.c \
 	list_back.c \
 	ft_strip_chrs.c \
-	swap_uint.c
+	swap_uint.c \
+	get_op_by_id.c
 SRC_ASM=\
 	main.c \
 	add_label.c \
@@ -56,7 +57,8 @@ SRC_VM=\
 	alloc_memory.c \
 	dump_memory.c \
 	put_players_on_memory.c \
-	new_process.c
+	new_process.c \
+	play.c
 OBJ_ASM=$(SRC_ASM:%.c=$(DIROBJ)$(DIRASM)%.o)
 OBJ_VM=$(SRC_VM:%.c=$(DIROBJ)$(DIRVM)%.o)
 OBJ_COMMON=$(SRC_COMMON:%.c=$(DIROBJ)$(DIRCOMMON)%.o)
