@@ -6,7 +6,7 @@
 /*   By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/17 14:57:26 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/12 13:00:27 by erobert          ###   ########.fr       */
+/*   Updated: 2016/01/14 14:03:17 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static t_bool		is_indirect(const char *param)
 	int				neg;
 
 	value = 0;
-	if (param[0] == LABEL_CHAR && is_correct_label(param + 0))
+	if (param[0] == LABEL_CHAR && is_correct_label(param + 1))
 		return (_TRUE);
 	i = 0;
 	while (param[i])
