@@ -6,7 +6,7 @@
 /*   By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/19 11:32:47 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/12 15:03:19 by erobert          ###   ########.fr       */
+/*   Updated: 2016/01/14 14:02:53 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void		get_token_params(t_token *new, char *params,
 	{
 		new->type_id = _TOKEN_REG;
 		new->value = ft_atoi(params + 1);
-		new->write = write_fct[0];
+		new->write = write_fct[_TOKEN_REG];
 	}
 	else if (params[0] == DIRECT_CHAR)
 	{
@@ -70,16 +70,16 @@ static void		get_token_params(t_token *new, char *params,
 			new->label_name = ft_strdup(params + 2);
 		else
 			new->value = ft_atoi(params + 1);
-		new->write = write_fct[1];
+		new->write = write_fct[_TOKEN_DIR];
 	}
 	else
 	{
 		new->type_id = _TOKEN_IND;
-		if (params[1] == LABEL_CHAR)
+		if (params[0] == LABEL_CHAR)
 			new->label_name = ft_strdup(params + 1);
 		else
 			new->value = ft_atoi(params);
-		new->write = write_fct[2];
+		new->write = write_fct[_TOKEN_IND];
 	}
 }
 
