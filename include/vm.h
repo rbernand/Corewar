@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:56:35 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 19:11:41 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/18 14:11:20 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 # include <stdint.h>
 
 # define SET_PC(X)			((X) % MEM_SIZE)
+
+#include <stdio.h>
+#define DEBUG				(printf("[%d]%s: %s\n", __LINE__, __FILE__, __FUNCTION__))
 
 typedef struct s_player		t_player;
 typedef struct s_action		t_action;
@@ -54,7 +57,7 @@ enum						e_action
 	_MAX_ACTIONS,
 };
 
-typedef int					(*t_exec_fct)(t_process *, void *);
+typedef int					(*t_exec_fct)(t_process *, void *, t_player *);
 
 union						u_data
 {
@@ -71,7 +74,9 @@ struct						s_process
 	unsigned int			carry;
 	unsigned int			start;
 	union u_data			params[MAX_ARGS_NUMBER];
+	int						size_params;
 	t_op					*op;
+	void					(*dump)(t_process *);
 	t_exec_fct				exec;
 };
 
@@ -87,6 +92,7 @@ struct						s_player
 	t_process			*process;
 };
 
+void			dump(t_process *self);
 t_return					parse_argument(int ac, char **av,
 							t_player players[MAX_PLAYERS],
 							int *cycles_to_dump);
@@ -99,5 +105,10 @@ t_return					put_players_on_memory(
 t_process					*new_process(int offset);
 void						play(t_player players[MAX_PLAYERS],
 							void *ptr, unsigned int cycles);
+
+int							live(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							sti(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
 
 #endif

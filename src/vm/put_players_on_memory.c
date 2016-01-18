@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 16:11:30 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 19:13:14 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/18 13:25:01 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,10 @@ t_return			put_players_on_memory(t_player players[MAX_PLAYERS],
 	{
 		if (players[i].is_active)
 		{
-			if (copy_player(memory, offset * i, &players[i]) == _ERR)
+			if (copy_player(memory, offset * (i % nbplayers), &players[i]) == _ERR)
 				return (PERROR("copy_player: error durint copy."));
-			players[i].process = new_process(offset);
+			players[i].process = new_process((i % nbplayers) * offset);
+			players[i].process->registers[0] = i + 1;
 		}
 		i++;
 	}

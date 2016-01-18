@@ -6,12 +6,23 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 16:49:25 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 17:09:59 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/18 13:20:57 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "list.h"
 #include "vm.h"
+
+void			dump(t_process *self)
+{
+	printf("process %d - current pc :: %d\n[", self->id, self->pc);
+	for (int i = 0; i< REG_NUMBER; i++)
+		printf("%d-", self->registers[i]);
+	printf("]\n(");
+	for (int i = 0; i< 3; i++)
+		printf("%lld-", self->params[i].value);
+	printf(")\n");
+}
 
 t_process			*new_process(int pc)
 {
@@ -21,5 +32,6 @@ t_process			*new_process(int pc)
 	new = NEW_LIST(t_process);
 	new->id = ++id;
 	new->pc = pc;
+	new->dump = &dump;
 	return (new);
 }
