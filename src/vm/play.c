@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 17:39:41 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/18 14:09:18 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/18 14:51:47 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,16 @@ static int				parse_args(union u_data params[MAX_ARGS_NUMBER],
 	while (i < MAX_ARGS_NUMBER)
 	{
 		tmp = ocp;
-		tmp = tmp << i;
-		tmp = tmp >> (MAX_PLAYERS - (i + 1));
+		tmp = tmp << i * 2;
+		tmp = tmp >> (MAX_ARGS_NUMBER - (i + 1)) * 2;
 		if (tmp == DIR_CODE)
 		{
-			DEBUG;
 			params[i] = get_value(memory, pc, (is_short ? DIR_SIZE / 2 : DIR_SIZE));
 			pc = SET_PC(pc + (is_short ? DIR_SIZE / 2 : DIR_SIZE));
 			size_params += (is_short ? DIR_SIZE / 2 : DIR_SIZE);
 		}
 		else if (tmp == IND_CODE)
 		{
-			DEBUG;
 			params[i] = get_value(memory, pc, IND_SIZE);
 			params[i] = get_value(memory, SET_PC(pc + params[i].value), IND_SIZE);
 			pc = SET_PC(pc + IND_SIZE);
@@ -64,7 +62,6 @@ static int				parse_args(union u_data params[MAX_ARGS_NUMBER],
 		}
 		else if (tmp == REG_CODE)
 		{
-			DEBUG;
 			params[i].value = get_value(memory, pc, REG_SIZE).value % REG_NUMBER;
 			pc = SET_PC(pc + REG_SIZE);
 			size_params += REG_SIZE;
@@ -83,10 +80,10 @@ static int			load(t_process *process, void *memory)
 		NULL,
 		NULL,
 		NULL,
+		&and,
 		NULL,
 		NULL,
-		NULL,
-		NULL,
+		&zjmp,
 		NULL,
 		&sti,
 		NULL,
@@ -107,7 +104,7 @@ static int			load(t_process *process, void *memory)
 	else
 	{
 		ft_memcpy(&process->params[0], memory + SET_PC(process->pc), DIR_SIZE);
-		process->size_params = DIR_CODE;
+		process->size_params = DIR_SIZE;
 	}
 	return (0);
 }
@@ -134,7 +131,8 @@ void			play(t_player players[MAX_PLAYERS], void *memory,
 			else if (cycles - current->start >= current->op->nb_cycles)
 			{
 				current->pc = SET_PC(current->pc
-						+ current->exec(current, memory, players));
+						+ current->exec(current, memory, players)
+						+ 1);
 				current->op = NULL;
 			}
 			current = current->next;

@@ -1,27 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sti.c                                              :+:      :+:    :+:   */
+/*   and.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/18 13:52:44 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/18 14:52:15 by rbernand         ###   ########.fr       */
+/*   Created: 2016/01/18 14:14:40 by rbernand          #+#    #+#             */
+/*   Updated: 2016/01/18 14:38:28 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <vm.h>
+#include "vm.h"
 
-int			sti(t_process *self, void *memory, t_player *players)
+int			and(t_process *self, void *memory, t_player *players)
 {
-	int				pc;
+	int64_t			v1;
+	int64_t			v2;
+	int64_t			res;
 	int				rindex;
 
+	(void)memory;
 	(void)players;
-	pc = SET_PC(self->params[1].value + self->params[2].value);
-	rindex = self->params[0].value;
+	v1 = self->params[0].value;
+	v2 = self->params[1].value;
+	res = v1 & v2;
+	ft_putendl("da");
+	rindex = self->params[2].value;
+	ft_putendl("da");
 	if (rindex < 0 || rindex >= REG_NUMBER)
 		return (self->size_params + 1);
-	ft_memcpy(memory + pc, &self->registers[rindex], REG_SIZE);
+	self->carry = (res != 0);
+	ft_putendl("da");
+	self->registers[rindex] = res;
+	ft_putendl("da");
 	return (self->size_params + 1);
 }
+

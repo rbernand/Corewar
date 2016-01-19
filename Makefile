@@ -6,7 +6,7 @@
 #    By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/10/16 15:08:59 by rbernand          #+#    #+#              #
-#    Updated: 2016/01/18 14:11:50 by rbernand         ###   ########.fr        #
+#    Updated: 2016/01/18 14:29:26 by rbernand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,7 +60,9 @@ SRC_VM=\
 	new_process.c \
 	play.c \
 	live.c \
-	sti.c
+	sti.c \
+	and.c \
+	zjmp.c
 OBJ_ASM=$(SRC_ASM:%.c=$(DIROBJ)$(DIRASM)%.o)
 OBJ_VM=$(SRC_VM:%.c=$(DIROBJ)$(DIRVM)%.o)
 OBJ_COMMON=$(SRC_COMMON:%.c=$(DIROBJ)$(DIRCOMMON)%.o)

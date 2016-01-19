@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:54:54 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/18 13:50:08 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/18 14:35:28 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ t_return		parse_argument(int ac, char **av,
 			return (PERROR("Invalid option."));
 		else
 		{
-			ft_putnbr(curs_player);
 			if (curs_player < 0 || curs_player >= MAX_PLAYERS)
 				return (PERROR("Invalid champ number."));
 			else if (players[curs_player].is_active)

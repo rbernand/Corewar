@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 12:01:43 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 19:07:13 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/18 15:05:25 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void				dump_memory(void *ptr)
 	int				i;
 
 	i = 0;
-	ft_putendl("\033[2Lm============= Dump Memory =============\033[0m");
+	ft_putendl("\033[H\033[2Jm============= Dump Memory =============\033[0m");
 	while (i < MEM_SIZE)
 	{
 		put_octet(*(unsigned char *)ptr);

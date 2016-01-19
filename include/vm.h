@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:56:35 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/18 14:11:20 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/18 14:29:33 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,10 @@ void						play(t_player players[MAX_PLAYERS],
 int							live(t_process *p, void *memory,
 							t_player players[MAX_PLAYERS]);
 int							sti(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							and(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							zjmp(t_process *p, void *memory,
 							t_player players[MAX_PLAYERS]);
 
 #endif
