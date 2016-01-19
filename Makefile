@@ -1,3 +1,4 @@
+
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
@@ -6,7 +7,7 @@
 #    By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/10/16 15:08:59 by rbernand          #+#    #+#              #
-#    Updated: 2016/01/18 14:29:26 by rbernand         ###   ########.fr        #
+#    Updated: 2016/01/19 17:44:27 by erobert          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,7 +63,20 @@ SRC_VM=\
 	live.c \
 	sti.c \
 	and.c \
-	zjmp.c
+	zjmp.c \
+	lfork.c \
+	sfork.c \
+	lld.c \
+	ld.c \
+	add.c \
+	sub.c \
+	ldi.c \
+	or.c \
+	xor.c \
+	st.c \
+	aff.c \
+	lldi.c \
+	read_memory.c
 OBJ_ASM=$(SRC_ASM:%.c=$(DIROBJ)$(DIRASM)%.o)
 OBJ_VM=$(SRC_VM:%.c=$(DIROBJ)$(DIRVM)%.o)
 OBJ_COMMON=$(SRC_COMMON:%.c=$(DIROBJ)$(DIRCOMMON)%.o)

@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:56:35 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/18 14:29:33 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/19 17:42:53 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ typedef int					(*t_exec_fct)(t_process *, void *, t_player *);
 
 union						u_data
 {
-	char				raw[sizeof(int64_t)];
-	int64_t				value;
+	char					raw[sizeof(int64_t)];
+	int64_t					value;
 };
 
 struct						s_process
@@ -82,17 +82,17 @@ struct						s_process
 
 struct						s_player
 {
-	int					is_active;
-	char				*name;
-	int					number;
-	int					fd;
-	int					lives;
-	char				*file_name;
-	t_header			header;
-	t_process			*process;
+	int						is_active;
+	char					*name;
+	int						number;
+	int						fd;
+	int						lives;
+	char					*file_name;
+	t_header				header;
+	t_process				*process;
 };
 
-void			dump(t_process *self);
+void						dump(t_process *self);
 t_return					parse_argument(int ac, char **av,
 							t_player players[MAX_PLAYERS],
 							int *cycles_to_dump);
@@ -105,6 +105,7 @@ t_return					put_players_on_memory(
 t_process					*new_process(int offset);
 void						play(t_player players[MAX_PLAYERS],
 							void *ptr, unsigned int cycles);
+union u_data				read_memory(void *memory, int pc, int len);
 
 int							live(t_process *p, void *memory,
 							t_player players[MAX_PLAYERS]);
@@ -114,5 +115,30 @@ int							and(t_process *p, void *memory,
 							t_player players[MAX_PLAYERS]);
 int							zjmp(t_process *p, void *memory,
 							t_player players[MAX_PLAYERS]);
+int							lfork(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							sfork(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							lld(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							ld(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							add(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							sub(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							ldi(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							or(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							xor(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							st(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							aff(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							lldi(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+
 
 #endif
