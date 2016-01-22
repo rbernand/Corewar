@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/22 15:50:54 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/22 16:47:23 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/22 17:30:44 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,10 @@ char						*write_memory(void *memory, int pc, void *src,
 	int							i;
 	int							tmp;
 
-	ft_putendl("da");
 	if (!array)
 	{
 		array = (char *)malloc(MEM_SIZE);
-		ft_bzero(array, MEM_SIZE);
+		ft_memset(array, _P_EMPTY, MEM_SIZE);
 	}
 	if (memory == NULL)
 		return (array);

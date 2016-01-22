@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 13:52:44 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/18 14:52:15 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/22 17:41:38 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int			sti(t_process *self, void *memory, t_player *players)
 	rindex = self->params[0].value;
 	if (rindex < 0 || rindex >= REG_NUMBER)
 		return (self->size_params + 1);
-	ft_memcpy(memory + pc, &self->registers[rindex], REG_SIZE);
+	/* ft_memcpy(memory + pc, &self->registers[rindex], REG_SIZE); */
+	write_memory(memory, pc, &self->registers[rindex], self->parent);
 	return (self->size_params + 1);
 }

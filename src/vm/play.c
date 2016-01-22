@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 17:39:41 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/22 15:30:07 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/22 17:05:33 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ void			play(t_player players[MAX_PLAYERS], void *memory,
 	int				i;
 	t_process		*current;
 
-	while (10);
 	i = MAX_PLAYERS;
 	while (--i >= 0)
 	{

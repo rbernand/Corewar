@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:56:35 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/22 16:19:07 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/22 17:42:36 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # define SET_PC(X)			((X) % MEM_SIZE)
 
 #include <stdio.h>
-#define DEBUG				(printf("[%d]%s: %s\n", __LINE__, __FILE__, __FUNCTION__))
+#define DEBUG				(dprintf(2, "[%d]%s: %s\n", __LINE__, __FILE__, __FUNCTION__))
 
 typedef struct s_player		t_player;
 typedef struct s_action		t_action;
@@ -29,7 +29,7 @@ typedef struct s_env		t_env;
 
 enum						e_player
 {
-	_P_EMPTY = 0,
+	_P_EMPTY = 1,
 	_P1,
 	_P2,
 	_P3,
@@ -77,6 +77,7 @@ struct						s_process
 	union u_data			params[MAX_ARGS_NUMBER];
 	int						size_params;
 	t_op					*op;
+	int						parent;
 	void					(*dump)(t_process *);
 	t_exec_fct				exec;
 };
@@ -114,7 +115,7 @@ void						dump_ncurses(void *ptr, t_player p[MAX_PLAYERS],
 t_return					put_players_on_memory(
 							t_player players[MAX_PLAYERS],
 							void *memory);
-t_process					*new_process(int offset);
+t_process					*new_process(int offset, int parent);
 void						play(t_player players[MAX_PLAYERS],
 							void *ptr, unsigned int cycles);
 union u_data				read_memory(void *memory, int pc, int len);

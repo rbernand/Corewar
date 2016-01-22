@@ -6,7 +6,7 @@
 /*   By: erobert <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/19 15:38:59 by erobert           #+#    #+#             */
-/*   Updated: 2016/01/19 16:02:56 by erobert          ###   ########.fr       */
+/*   Updated: 2016/01/22 17:41:16 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int				lfork(t_process *self, void *memory, t_player *players)
 	int			i;
 
 	(void)memory;
-	new = new_process(SET_PC(self->params[0].value));
+	new = new_process(SET_PC(self->params[0].value), self->parent);
 	i = -1;
 	while (++i < REG_NUMBER)
 		new->registers[i] = self->registers[i];

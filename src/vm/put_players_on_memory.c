@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 16:11:30 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/22 16:41:58 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/22 17:42:16 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static t_return		copy_player(void *ptr, unsigned int offset,
 	unsigned int i = 0;
 	while (i < player->header.prog_size)
 	{
-		array[offset + i] = player->number;
+		array[offset + i] = player->number + _P_EMPTY;
 		i++;
 	}
 	close(player->fd);
@@ -61,7 +61,8 @@ t_return			put_players_on_memory(t_player players[MAX_PLAYERS],
 		{
 			if (copy_player(memory, offset * (i % nbplayers), &players[i]) == _ERR)
 				return (PERROR("copy_player: error durint copy."));
-			players[i].process = new_process((i % nbplayers) * offset);
+			players[i].process = new_process((i % nbplayers) * offset,
+					players[i].number);
 			players[i].process->registers[0] = i + 1;
 		}
 		i++;

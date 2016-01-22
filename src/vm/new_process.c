@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 16:49:25 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/19 15:59:01 by erobert          ###   ########.fr       */
+/*   Updated: 2016/01/22 17:39:32 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void			dump(t_process *self)
 	printf(")\n");
 }
 
-t_process			*new_process(int pc)
+t_process			*new_process(int pc, int parent)
 {
 	static int			id = 0;
 	t_process			*new;
@@ -32,6 +32,7 @@ t_process			*new_process(int pc)
 	new = NEW_LIST(t_process);
 	new->id = ++id;
 	new->pc = pc;
+	new->parent = parent;
 	new->dump = &dump;
 	return (new);
 }
