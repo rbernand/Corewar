@@ -6,23 +6,32 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 16:11:30 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/18 13:25:01 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/22 16:32:05 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 #include <unistd.h>
+#include <stdlib.h>
 
 static t_return		copy_player(void *ptr, unsigned int offset,
 					t_player *player)
 {
-	int				ret;
+	int					ret;
+	char				*array;
 
+	array = write_memory(NULL, 0, NULL, _P_EMPTY);
 	ret = read(player->fd, ptr + offset, player->header.prog_size);
 	if (ret <= 0)
 		return (PERROR("read: Error reading."));
 	else if ((unsigned int)ret != player->header.prog_size)
 		return (PERROR("read: Invalid program size."));
+	unsigned int i = 0;
+	while (i < player->header.prog_size)
+	{
+		array[i + offset] = player->number + 1;
+		i++;
+	}
 	close(player->fd);
 	return (_SUCCESS);
 }

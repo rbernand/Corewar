@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:56:35 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/19 17:42:53 by erobert          ###   ########.fr       */
+/*   Updated: 2016/01/22 16:19:07 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,15 @@
 typedef struct s_player		t_player;
 typedef struct s_action		t_action;
 typedef struct s_process	t_process;
+typedef struct s_env		t_env;
 
 enum						e_player
 {
-	_P_EMPTY = -1,
-	_P0,
+	_P_EMPTY = 0,
 	_P1,
 	_P2,
 	_P3,
+	_P4,
 };
 
 enum						e_action
@@ -92,13 +93,24 @@ struct						s_player
 	t_process				*process;
 };
 
+struct						s_env
+{
+	int						verbose : 1;
+	int						graphics: 1;
+	int						cycles_to_dump;
+	unsigned int			cycles;
+};
+
 void						dump(t_process *self);
 t_return					parse_argument(int ac, char **av,
 							t_player players[MAX_PLAYERS],
-							int *cycles_to_dump);
+							t_env *env);
 t_return					load_players(t_player players[MAX_PLAYERS]);
 void						*alloc_memory(void);
-void						dump_memory(void *ptr);
+void						dump_memory(void *ptr, t_player p[MAX_PLAYERS], 
+							t_env *env);
+void						dump_ncurses(void *ptr, t_player p[MAX_PLAYERS], 
+							t_env *env);
 t_return					put_players_on_memory(
 							t_player players[MAX_PLAYERS],
 							void *memory);
@@ -106,6 +118,8 @@ t_process					*new_process(int offset);
 void						play(t_player players[MAX_PLAYERS],
 							void *ptr, unsigned int cycles);
 union u_data				read_memory(void *memory, int pc, int len);
+char						*write_memory(void *memory, int pc, void *src,
+							enum e_player p);
 
 int							live(t_process *p, void *memory,
 							t_player players[MAX_PLAYERS]);

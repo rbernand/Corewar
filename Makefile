@@ -57,6 +57,7 @@ SRC_VM=\
 	load_players.c \
 	alloc_memory.c \
 	dump_memory.c \
+	dump_ncurses.c \
 	put_players_on_memory.c \
 	new_process.c \
 	play.c \
@@ -76,7 +77,8 @@ SRC_VM=\
 	st.c \
 	aff.c \
 	lldi.c \
-	read_memory.c
+	read_memory.c \
+	write_memory.c
 OBJ_ASM=$(SRC_ASM:%.c=$(DIROBJ)$(DIRASM)%.o)
 OBJ_VM=$(SRC_VM:%.c=$(DIROBJ)$(DIRVM)%.o)
 OBJ_COMMON=$(SRC_COMMON:%.c=$(DIROBJ)$(DIRCOMMON)%.o)
@@ -109,7 +111,7 @@ libft:
 
 $(VM): $(OBJ_VM) $(OBJ_COMMON)
 	@printf "\r\033[2KCompiling %s\n" $@
-	@$(CC) $(FLAGS) -o $(DIRBIN)$@ $^ -I$(INCLUDES) -L$(DIRLIB) -lft
+	@$(CC) $(FLAGS) -o $(DIRBIN)$@ $^ -I$(INCLUDES) -L$(DIRLIB) -lft -lncurses
 	@ln -f $(DIRBIN)$@ $@
 
 $(ASM): $(OBJ_ASM) $(OBJ_COMMON)

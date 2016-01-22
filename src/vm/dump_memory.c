@@ -6,11 +6,12 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 12:01:43 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/18 15:05:25 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/22 15:15:23 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "common.h"
+#include "vm.h"
 #include "libft.h"
 
 static char			convert(unsigned char c)
@@ -30,10 +31,13 @@ static void			put_octet(unsigned char c)
 		ft_putstr("\033[0m");
 }
 
-void				dump_memory(void *ptr)
+void				dump_memory(void *ptr, t_player players[MAX_PLAYERS], 
+					t_env *env)
 {
 	int				i;
 
+	(void)players;
+	(void)env;
 	i = 0;
 	ft_putendl("\033[H\033[2Jm============= Dump Memory =============\033[0m");
 	while (i < MEM_SIZE)

@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:54:54 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/18 14:35:28 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/22 12:53:39 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <libft.h>
 
 t_return		parse_argument(int ac, char **av,
-				t_player players[MAX_PLAYERS], int *cycles_to_dump)
+				t_player players[MAX_PLAYERS], t_env *env)
 {
 	int				i;
 	int				curs_player;
@@ -27,7 +27,11 @@ t_return		parse_argument(int ac, char **av,
 		if (ft_strcmp(av[i], "-dump") == 0 && i + 1 == ac)
 			return (PERROR("missing arguement after -dump."));
 		else if (ft_strcmp(av[i], "-dump") == 0)
-			*cycles_to_dump = ft_atoi(av[i++ + 1]);
+			env->cycles_to_dump = ft_atoi(av[i++ + 1]);
+		else if (ft_strcmp(av[i], "-g") == 0)
+			env->graphics = 1;
+		else if (ft_strcmp(av[i], "-v") == 0)
+			env->verbose = 1;
 		else if (ft_strcmp(av[i], "-n") == 0 && i + 2 == ac)
 			return (PERROR("missing champ file after -n."));
 		else if (ft_strcmp(av[i], "-n") == 0)

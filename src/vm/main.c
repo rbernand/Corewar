@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:51:06 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/18 13:43:29 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/22 16:31:19 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,21 @@ static t_return			print_usage(void)
 }
 
 static t_return			main_loop(t_player players[MAX_PLAYERS],
-						void *memory, int cycles_to_dump)
+						void *memory, t_env env)
 {
-	unsigned int				cycles;
+	void						(*dump_fct)(void *memory,
+								t_player[MAX_PLAYERS], t_env *);
 
-	(void)players;
-	(void)cycles_to_dump;
-	cycles = 0;
+	dump_fct = env.graphics ? &dump_ncurses : &dump_memory;
+	if (env.cycles_to_dump)
+		dump_fct(memory, players, &env);
 	while (1)
 	{
-		if (cycles_to_dump && cycles % cycles_to_dump == 0)
-			dump_memory(memory);
-		play(players, memory, cycles);
-		cycles++;
+		if (env.cycles_to_dump && env.cycles % env.cycles_to_dump == 0)
+			dump_fct(memory, players, &env);
+		play(players, memory, env.cycles);
+		env.cycles++;
+		return (_SUCCESS);
 	}
 	return (_SUCCESS);
 }
@@ -43,12 +45,12 @@ static t_return			main_loop(t_player players[MAX_PLAYERS],
 int						main(int ac, char **av)
 {
 	t_player				players[MAX_PLAYERS];
-	int						cycles_to_dump;
+	t_env					env;
 	void					*memory;
 
 	ft_bzero(players, sizeof(t_player) * 4);
-	cycles_to_dump = 0;
-	if (parse_argument(ac, av, players, &cycles_to_dump) == _ERR)
+	ft_bzero(&env, sizeof(t_env));
+	if (parse_argument(ac, av, players, &env) == _ERR)
 		return (print_usage());
 	if (!(memory = alloc_memory()))
 		return (PERROR("alloc_memory: Failed to load VM."));
@@ -56,6 +58,6 @@ int						main(int ac, char **av)
 		return (PERROR("load_players: Error during players initialization."));
 	if (put_players_on_memory(players, memory) == _ERR)
 		return (PERROR("failed during init."));
-	main_loop(players, memory, cycles_to_dump);
+	main_loop(players, memory, env);
 	return (0);
 }
