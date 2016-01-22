@@ -1,25 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   alloc_memory.c                                     :+:      :+:    :+:   */
+/*   live.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/14 11:08:45 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 16:55:30 by rbernand         ###   ########.fr       */
+/*   Created: 2016/01/18 11:58:16 by rbernand          #+#    #+#             */
+/*   Updated: 2016/01/19 15:36:26 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "vm.h"
+#include <vm.h>
 
-void				*alloc_memory(void)
+int			live(t_process *self, void *memory, t_player *players)
 {
-	void			*ptr;
+	int				id_p;
 
-	ptr = (void *)malloc(MEM_SIZE);
-	if (!ptr)
-		PERROR("malloc: allocation failed.");
-	ft_bzero(ptr, MEM_SIZE);
-	return (ptr);
+	(void)memory;
+	id_p = self->params[0].value;
+	if (!(id_p >= 1 && id_p <= 4))
+		return (self->size_params + 1);
+	if (!players[id_p - 1].is_active)
+		return (self->size_params + 1);
+//	ft_putstr("Players (");
+//	ft_putnbr(id_p);
+//	ft_putendl(") is alive.");
+	players[id_p - 1].lives++;
+	return (self->size_params + 1);
 }

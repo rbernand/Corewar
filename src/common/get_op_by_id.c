@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   alloc_memory.c                                     :+:      :+:    :+:   */
+/*   get_op_by_id.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/14 11:08:45 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 16:55:30 by rbernand         ###   ########.fr       */
+/*   Created: 2016/01/14 18:13:42 by rbernand          #+#    #+#             */
+/*   Updated: 2016/01/14 18:14:00 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "vm.h"
+#include "common.h"
 
-void				*alloc_memory(void)
+t_op		*get_op_by_id(size_t id)
 {
-	void			*ptr;
+	size_t		i;
 
-	ptr = (void *)malloc(MEM_SIZE);
-	if (!ptr)
-		PERROR("malloc: allocation failed.");
-	ft_bzero(ptr, MEM_SIZE);
-	return (ptr);
+	i = 0;
+	while (i < 16)
+	{
+		if (g_op_tab[i].op_code == id)
+			return (&(g_op_tab[i]));
+		i++;
+	}
+	return (&g_op_tab[16]);
 }

@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 11:12:35 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 13:21:27 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/18 12:13:01 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,13 @@
 #include "common.h"
 #include "vm.h"
 
-
-#include <stdio.h>
-
 static t_return		check_header(t_header *header)
 {
-	if (swap_uint(header->magic) != COREWAR_EXEC_MAGIC)
+	header->magic = swap_uint(header->magic);
+	header->prog_size = swap_uint(header->prog_size);
+	if (header->magic != COREWAR_EXEC_MAGIC)
 		return (PERROR("Invalid binary file."));
-	if (swap_uint(header->prog_size) >= CHAMP_MAX_SIZE)
+	if (header->prog_size >= CHAMP_MAX_SIZE)
 		return (PERROR("header: Champ to big. Don't cheat."));
 	ft_putstr("Champion '");
 	ft_putstr(header->prog_name);
@@ -31,18 +30,10 @@ static t_return		check_header(t_header *header)
 	return (_SUCCESS);
 }
 
-static t_return		init_process(t_player *player)
-{
-	(void)player;
-	return (_SUCCESS);
-}
-
 t_return			load_players(t_player players[MAX_PLAYERS])
 {
 	int				i;
 	int				ret;
-
-	(void)init_process;
 
 	i = 0;
 	while (i < MAX_PLAYERS)

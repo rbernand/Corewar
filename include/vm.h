@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:56:35 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/14 13:20:42 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/19 17:42:53 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,30 @@
 
 # include "common.h"
 # include "libft.h"
+# include <stdint.h>
 
-typedef struct s_player				t_player;
-typedef struct s_action				t_action;
-typedef struct s_process			t_process;
+# define SET_PC(X)			((X) % MEM_SIZE)
 
-enum								e_action
+#include <stdio.h>
+#define DEBUG				(printf("[%d]%s: %s\n", __LINE__, __FILE__, __FUNCTION__))
+
+typedef struct s_player		t_player;
+typedef struct s_action		t_action;
+typedef struct s_process	t_process;
+
+enum						e_player
 {
-	_INVALID = -1,
-	_LIVE = 0,
+	_P_EMPTY = -1,
+	_P0,
+	_P1,
+	_P2,
+	_P3,
+};
+
+enum						e_action
+{
+	_INVALID = 0,
+	_LIVE = 1,
 	_LD,
 	_ST,
 	_ADD,
@@ -42,38 +57,88 @@ enum								e_action
 	_MAX_ACTIONS,
 };
 
-struct								s_action
+typedef int					(*t_exec_fct)(t_process *, void *, t_player *);
+
+union						u_data
 {
-	char				*name;
-	enum e_action		type;
-	t_return			(*load)();
-	t_return			(*exec)();
+	char					raw[sizeof(int64_t)];
+	int64_t					value;
 };
 
-struct								s_process
+struct						s_process
 {
-	unsigned char			registers[REG_NUMBER][REG_SIZE];
-	unsigned char			pc[REG_SIZE];
+	t_process				*next;
+	unsigned int			id;
+	int						registers[REG_NUMBER];
+	unsigned int			pc;
 	unsigned int			carry;
+	unsigned int			start;
+	union u_data			params[MAX_ARGS_NUMBER];
+	int						size_params;
+	t_op					*op;
+	void					(*dump)(t_process *);
+	t_exec_fct				exec;
 };
 
-struct								s_player
+struct						s_player
 {
-	int					is_active;
-	char				*name;
-	int					fd;
-	int					lives;
-	char				*file_name;
-	t_header			header;
-	t_action			current;
-	t_process			process;
+	int						is_active;
+	char					*name;
+	int						number;
+	int						fd;
+	int						lives;
+	char					*file_name;
+	t_header				header;
+	t_process				*process;
 };
 
-t_return							parse_argument(int ac, char **av,
-									t_player players[MAX_PLAYERS],
-									int *cycles_to_dump);
-t_return							load_players(t_player players[MAX_PLAYERS]);
-void								*alloc_memory(void);
-void								dump_memory(void *ptr);
+void						dump(t_process *self);
+t_return					parse_argument(int ac, char **av,
+							t_player players[MAX_PLAYERS],
+							int *cycles_to_dump);
+t_return					load_players(t_player players[MAX_PLAYERS]);
+void						*alloc_memory(void);
+void						dump_memory(void *ptr);
+t_return					put_players_on_memory(
+							t_player players[MAX_PLAYERS],
+							void *memory);
+t_process					*new_process(int offset);
+void						play(t_player players[MAX_PLAYERS],
+							void *ptr, unsigned int cycles);
+union u_data				read_memory(void *memory, int pc, int len);
+
+int							live(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							sti(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							and(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							zjmp(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							lfork(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							sfork(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							lld(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							ld(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							add(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							sub(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							ldi(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							or(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							xor(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							st(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							aff(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+int							lldi(t_process *p, void *memory,
+							t_player players[MAX_PLAYERS]);
+
 
 #endif

@@ -1,3 +1,4 @@
+
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
@@ -6,7 +7,7 @@
 #    By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/10/16 15:08:59 by rbernand          #+#    #+#              #
-#    Updated: 2016/01/14 13:25:35 by erobert          ###   ########.fr        #
+#    Updated: 2016/01/19 17:44:27 by erobert          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +37,8 @@ SRC_COMMON=\
 	list_iter.c \
 	list_back.c \
 	ft_strip_chrs.c \
-	swap_uint.c
+	swap_uint.c \
+	get_op_by_id.c
 SRC_ASM=\
 	main.c \
 	add_label.c \
@@ -54,7 +56,27 @@ SRC_VM=\
 	parse_argument.c \
 	load_players.c \
 	alloc_memory.c \
-	dump_memory.c
+	dump_memory.c \
+	put_players_on_memory.c \
+	new_process.c \
+	play.c \
+	live.c \
+	sti.c \
+	and.c \
+	zjmp.c \
+	lfork.c \
+	sfork.c \
+	lld.c \
+	ld.c \
+	add.c \
+	sub.c \
+	ldi.c \
+	or.c \
+	xor.c \
+	st.c \
+	aff.c \
+	lldi.c \
+	read_memory.c
 OBJ_ASM=$(SRC_ASM:%.c=$(DIROBJ)$(DIRASM)%.o)
 OBJ_VM=$(SRC_VM:%.c=$(DIROBJ)$(DIRVM)%.o)
 OBJ_COMMON=$(SRC_COMMON:%.c=$(DIROBJ)$(DIRCOMMON)%.o)

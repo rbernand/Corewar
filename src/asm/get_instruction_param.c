@@ -6,12 +6,13 @@
 /*   By: erobert <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/12 14:36:34 by erobert           #+#    #+#             */
-/*   Updated: 2016/01/12 14:40:46 by erobert          ###   ########.fr       */
+/*   Updated: 2016/01/14 18:13:35 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <asm.h>
+#include "common.h"
 
 static void		dump_instruction(t_instruction *self)
 {
@@ -41,20 +42,6 @@ static void		write_instruction(t_instruction *self, int fd)
 		tokens->write(tokens, fd, self->op_data->is_short);
 		tokens = tokens->next;
 	}
-}
-
-static t_op		*get_op_by_id(size_t id)
-{
-	size_t		i;
-
-	i = 0;
-	while (i < 16)
-	{
-		if (g_op_tab[i].op_code == id)
-			return (&(g_op_tab[i]));
-		i++;
-	}
-	return (&g_op_tab[16]);
 }
 
 static int		get_op_code(const char *str)
