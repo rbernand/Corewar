@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:54:54 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/22 12:53:39 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/22 16:41:54 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ t_return		parse_argument(int ac, char **av,
 				return (PERROR("champ already set."));
 			players[curs_player].is_active = 1;
 			players[curs_player].file_name = av[i];
+			players[curs_player].number = curs_player + 1;
 			curs_player = (curs_player + 1) % MAX_PLAYERS;
 		}
 		i++;

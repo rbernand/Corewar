@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 12:01:43 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/22 16:30:41 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/22 16:44:31 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void			put_pc(t_ncurses *data, t_player players[MAX_PLAYERS])
 			while (current)
 			{
 				mvwchgat(data->memory_win, current->pc / MEMX + 1,
-					(current->pc % MEMX) * 3 + 1, 2, A_REVERSE, COLOR_GREEN, NULL);
+					(current->pc % MEMX) * 3 + 1, 2, A_REVERSE, 0, NULL);
 				current = current->next;
 			}
 		}
@@ -75,9 +75,15 @@ static void			put_player(t_ncurses *data)
 	i = 0;
 	while (i < MEM_SIZE)
 	{
-		ft_putchar_fd((char)array[i] + '0', 2);
-		mvwchgat(data->memory_win, i / MEMX + 1,
-			(i % MEMX) * 3 + 1, 2, A_NORMAL, array[i], NULL);
+		ft_putchar_fd(array[i] + '0', 2);
+		if (array[i])
+		{
+			ft_putchar_fd('[', 2);
+		ft_putchar_fd(array[i] + '0', 2);
+			mvwchgat(data->memory_win, i / MEMX + 1,
+				(i % MEMX) * 3 + 1, 2, A_NORMAL, array[i], NULL);
+			ft_putchar_fd(']', 2);
+		}
 		i++;
 	}
 }
@@ -111,8 +117,8 @@ void				dump_ncurses(void *ptr, t_player players[MAX_PLAYERS],
 		mvwprintw(data.memory_win, i + 1, 1, "%s", buf[i]);
 		i++;
 	}
-	put_player(&data);
 	put_pc(&data, players);
+	put_player(&data);
 	mvwprintw(data.panel_win, 1, 1, "Cycles: %d", env->cycles);
 	wrefresh(data.panel_win);
 	wrefresh(data.memory_win);

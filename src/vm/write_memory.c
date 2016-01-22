@@ -6,20 +6,26 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/22 15:50:54 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/22 16:24:03 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/22 16:47:23 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "vm.h"
 
 char						*write_memory(void *memory, int pc, void *src,
 								enum e_player p)
 {
-	static char				array[MEM_SIZE];
+	static char					*array = NULL;
 	int							i;
 	int							tmp;
 
 	ft_putendl("da");
+	if (!array)
+	{
+		array = (char *)malloc(MEM_SIZE);
+		ft_bzero(array, MEM_SIZE);
+	}
 	if (memory == NULL)
 		return (array);
 	i = 0;

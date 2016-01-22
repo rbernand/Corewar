@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 16:11:30 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/22 16:32:05 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/22 16:41:58 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static t_return		copy_player(void *ptr, unsigned int offset,
 	unsigned int i = 0;
 	while (i < player->header.prog_size)
 	{
-		array[i + offset] = player->number + 1;
+		array[offset + i] = player->number;
 		i++;
 	}
 	close(player->fd);
