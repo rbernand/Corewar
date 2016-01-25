@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 17:39:41 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/22 17:05:33 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/25 13:57:45 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int				parse_args(union u_data params[MAX_ARGS_NUMBER],
 		}
 		else if (tmp == REG_CODE)
 		{
-			params[i].value = read_memory(memory, pc, REG_SIZE).value % REG_NUMBER;
+			params[i].value = read_memory(memory, pc, REG_SIZE).value;// % REG_NUMBER;
 			pc = SET_PC(pc + REG_SIZE);
 			size_params += REG_SIZE;
 		}
@@ -115,6 +115,8 @@ void			play(t_player players[MAX_PLAYERS], void *memory,
 				current->pc = SET_PC(current->pc
 						+ current->exec(current, memory, players)
 						+ 1);
+				ft_putnbr_fd(current->pc, 2);
+				ft_putendl_fd(" pc", 2);
 				current->op = NULL;
 			}
 			current = current->next;

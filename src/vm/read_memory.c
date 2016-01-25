@@ -6,7 +6,7 @@
 /*   By: erobert <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/19 17:41:45 by erobert           #+#    #+#             */
-/*   Updated: 2016/01/19 17:41:53 by erobert          ###   ########.fr       */
+/*   Updated: 2016/01/25 13:55:57 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ union u_data		read_memory(void *memory, int pc, int len)
 	while (i < len)
 	{
 		out.raw[i] = *(char *)(memory + SET_PC(pc + len - (i + 1)));
-		//                      + i
+//		out.raw[i] = *(char *)(memory + SET_PC(pc + i));
 		;// WARNING ENDIAN
 		i++;
 	}

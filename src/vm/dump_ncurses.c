@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 12:01:43 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/22 17:35:28 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/25 13:33:44 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,10 @@ static void			put_pc(t_ncurses *data, t_player players[MAX_PLAYERS])
 
 static void			put_player(t_ncurses *data)
 {
-	int							i;
-	static char					*array = NULL;
+	int				i;
+	char			*array;
 
-	if (!array)
-		array = write_memory(NULL, 0, NULL, _P_EMPTY);
+	array = write_memory(NULL, 0, NULL, _P_EMPTY);
 	i = 0;
 	while (i < MEM_SIZE)
 	{
