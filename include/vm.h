@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:56:35 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/22 17:42:36 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/25 14:00:50 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ struct						s_process
 	int						size_params;
 	t_op					*op;
 	int						parent;
-	void					(*dump)(t_process *);
+	void					(*dump)(t_process *, int);
 	t_exec_fct				exec;
 };
 
@@ -102,7 +102,6 @@ struct						s_env
 	unsigned int			cycles;
 };
 
-void						dump(t_process *self);
 t_return					parse_argument(int ac, char **av,
 							t_player players[MAX_PLAYERS],
 							t_env *env);

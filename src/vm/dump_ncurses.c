@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 12:01:43 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/25 13:33:44 by erobert          ###   ########.fr       */
+/*   Updated: 2016/01/25 14:20:47 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,13 @@ void				dump_ncurses(void *ptr, t_player players[MAX_PLAYERS],
 	put_player(&data);
 	put_pc(&data, players);
 	mvwprintw(data.panel_win, 1, 1, "Cycles: %d", env->cycles);
+	i = 0;
+	while (i < MAX_PLAYERS)
+	{
+		mvwprintw(data.panel_win, 3 + i, 1, "Player %d lives: %d", i + 1,
+				  players[i].lives);
+		i++;
+	}
 	wrefresh(data.panel_win);
 	wrefresh(data.memory_win);
 	if (data.key == ' ')

@@ -6,7 +6,7 @@
 /*   By: erobert <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/19 17:09:16 by erobert           #+#    #+#             */
-/*   Updated: 2016/01/19 17:09:26 by erobert          ###   ########.fr       */
+/*   Updated: 2016/01/25 15:30:17 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ int			xor(t_process *self, void *memory, t_player *players)
 	v1 = self->params[0].value;
 	v2 = self->params[1].value;
 	res = v1 ^ v2;
-	rindex = self->params[2].value;
+	rindex = self->params[2].value - 1;
 	if (rindex < 0 || rindex >= REG_NUMBER)
-		return (self->size_params + 1);
+		return (self->size_params);
 	//      self->carry = (res != 0);
 	self->registers[rindex] = res;
-	return (self->size_params + 1);
+	return (self->size_params);
 }

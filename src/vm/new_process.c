@@ -6,22 +6,26 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 16:49:25 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/22 17:39:32 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/25 14:15:16 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "list.h"
 #include "vm.h"
 
-void			dump(t_process *self)
+static void			dump_process(t_process *self, int fd)
 {
-	printf("process %d - current pc :: %d\n[", self->id, self->pc);
+	dprintf(fd, "\033[3%dm", self->id);
+	dprintf(fd, "process %d - current pc :: %d\n", self->id, self->pc);
+	dprintf(fd, "carry: %d\n[", self->carry);
 	for (int i = 0; i< REG_NUMBER; i++)
-		printf("%d-", self->registers[i]);
-	printf("]\n(");
+		dprintf(fd, "%d-", self->registers[i]);
+	dprintf(fd, "]\n(");
 	for (int i = 0; i< 3; i++)
-		printf("%lld-", self->params[i].value);
-	printf(")\n");
+		dprintf(fd, "%lld-", self->params[i].value);
+	dprintf(fd, ")\n");
+	dprintf(fd, "op: %s\n", self->op->name);
+	dprintf(fd, "\033[0m");
 }
 
 t_process			*new_process(int pc, int parent)
@@ -33,6 +37,6 @@ t_process			*new_process(int pc, int parent)
 	new->id = ++id;
 	new->pc = pc;
 	new->parent = parent;
-	new->dump = &dump;
+	new->dump = &dump_process;
 	return (new);
 }

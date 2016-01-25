@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/22 15:50:54 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/25 12:16:00 by erobert          ###   ########.fr       */
+/*   Updated: 2016/01/25 15:21:06 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ char			*write_memory(void *memory, int pc, void *src, enum e_player p)
 	i = 0;
 	while (i < REG_SIZE)
 	{
-		tmp = SET_PC(pc + i);
+		tmp = SET_PC(pc + REG_SIZE - (i + 1));
 		*(char *)(memory + tmp) = *(char *)(src + i);
-		array[tmp] = p;
+		array[tmp] = p + _P_EMPTY;
 		i++;
 	}
 	return (array);

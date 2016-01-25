@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 17:39:41 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/25 13:57:45 by erobert          ###   ########.fr       */
+/*   Updated: 2016/01/25 15:40:45 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ static int				parse_args(union u_data params[MAX_ARGS_NUMBER],
 						void *memory, unsigned int pc, int is_short)
 {
 	int					i;
-	char				ocp;
-	char				tmp;
+	unsigned char		ocp;
+	unsigned char		tmp;
 	int					size_params;
 
 	i = 0;
@@ -26,12 +26,15 @@ static int				parse_args(union u_data params[MAX_ARGS_NUMBER],
 	pc = SET_PC(pc + 1);
 	while (i < MAX_ARGS_NUMBER)
 	{
-		tmp = ocp;
-		tmp = tmp << i * 2;
-		tmp = tmp >> (MAX_ARGS_NUMBER - (i + 1)) * 2;
+		tmp = ocp << i * 2;
+		tmp = tmp >> 6;
 		if (tmp == DIR_CODE)
 		{
-			params[i] = read_memory(memory, pc, (is_short ? DIR_SIZE / 2 : DIR_SIZE));
+			ft_putnbr_fd(is_short, 2);
+			ft_putstr_fd("_is_short_", 2);
+			ft_putendl_fd("", 2);
+			params[i] = read_memory(memory, pc, (is_short ?
+												 DIR_SIZE / 2 : DIR_SIZE));
 			pc = SET_PC(pc + (is_short ? DIR_SIZE / 2 : DIR_SIZE));
 			size_params += (is_short ? DIR_SIZE / 2 : DIR_SIZE);
 		}
@@ -44,9 +47,9 @@ static int				parse_args(union u_data params[MAX_ARGS_NUMBER],
 		}
 		else if (tmp == REG_CODE)
 		{
-			params[i].value = read_memory(memory, pc, REG_SIZE).value;// % REG_NUMBER;
-			pc = SET_PC(pc + REG_SIZE);
-			size_params += REG_SIZE;
+			params[i].value = read_memory(memory, pc, 1).value;// % REG_NUMBER;
+			pc = SET_PC(pc + 1);
+			size_params += 1;
 		}
 		i++;
 	}
@@ -112,11 +115,11 @@ void			play(t_player players[MAX_PLAYERS], void *memory,
 			}
 			else if (cycles - current->start >= current->op->nb_cycles)
 			{
+				current->dump(current, 2);
 				current->pc = SET_PC(current->pc
 						+ current->exec(current, memory, players)
 						+ 1);
-				ft_putnbr_fd(current->pc, 2);
-				ft_putendl_fd(" pc", 2);
+				ft_bzero(current->params, MAX_ARGS_NUMBER * 4);
 				current->op = NULL;
 			}
 			current = current->next;
