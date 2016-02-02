@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 17:39:41 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/25 15:40:45 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/02 14:46:51 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ static int				parse_args(union u_data params[MAX_ARGS_NUMBER],
 		tmp = tmp >> 6;
 		if (tmp == DIR_CODE)
 		{
-			ft_putnbr_fd(is_short, 2);
-			ft_putstr_fd("_is_short_", 2);
-			ft_putendl_fd("", 2);
+//			ft_putnbr_fd(is_short, 2);
+//			ft_putstr_fd("_is_short_", 2);
+//			ft_putendl_fd("", 2);
 			params[i] = read_memory(memory, pc, (is_short ?
 												 DIR_SIZE / 2 : DIR_SIZE));
 			pc = SET_PC(pc + (is_short ? DIR_SIZE / 2 : DIR_SIZE));
@@ -59,7 +59,7 @@ static int				parse_args(union u_data params[MAX_ARGS_NUMBER],
 static int			load(t_process *process, void *memory)
 {
 	unsigned char		op_code;
-	static t_exec_fct		execs[_MAX_ACTIONS] = { NULL,
+	static t_exec_fct	execs[_MAX_ACTIONS] = { NULL,
 		&live,
 		&ld,
 		&st,
@@ -88,8 +88,22 @@ static int			load(t_process *process, void *memory)
 				memory, SET_PC(process->pc + 1), process->op->is_short);
 	else
 	{
-		ft_memcpy(&process->params[0], memory + SET_PC(process->pc), DIR_SIZE);
-		process->size_params = DIR_SIZE;
+//		ft_memcpy(&process->params[0], memory + SET_PC(process->pc + 1),
+//				  (process->op->is_short ? DIR_SIZE / 2 : DIR_SIZE));
+		if (process->op->is_short)
+			process->params[0].value = (short)read_memory(memory,
+														  process->pc + 1,
+														  DIR_SIZE / 2).value;
+		else
+			process->params[0] = read_memory(memory, process->pc + 1,
+											 DIR_SIZE);
+//		ft_putnbr_fd(SET_PC(process->pc + 1), 2);
+//		ft_putendl_fd("_SET_PC_", 2);
+//		ft_putnbr_fd(process->op->is_short, 2);
+//		ft_putendl_fd("_is_short_", 2);
+//		process->dump(process, 2);
+		process->size_params = (process->op->is_short ?
+								DIR_SIZE / 2 : DIR_SIZE);
 	}
 	return (0);
 }
@@ -110,16 +124,25 @@ void			play(t_player players[MAX_PLAYERS], void *memory,
 		{
 			if (current->op == NULL)
 			{
+				current->pc = SET_PC(current->pc);
+//				ft_putnbr_fd(cycles, 2);
+//				ft_putendl_fd("_loading_", 2);
 				current->pc = SET_PC(current->pc + load(current, memory));
 				current->start = cycles;
 			}
-			else if (cycles - current->start >= current->op->nb_cycles)
+			else if (cycles - current->start >= current->op->nb_cycles - 1)
 			{
+//				ft_putnbr_fd(cycles, 2);
+//				ft_putendl_fd("_exec_", 2);
 				current->dump(current, 2);
 				current->pc = SET_PC(current->pc
 						+ current->exec(current, memory, players)
 						+ 1);
-				ft_bzero(current->params, MAX_ARGS_NUMBER * 4);
+//				ft_putnbr_fd(current->pc, 2);
+//				ft_putendl_fd("_curent_pc_", 2);
+//				ft_putnbr_fd(current->exec(current, memory, players), 2);
+//				ft_putendl_fd("_exec_return_", 2);
+				ft_bzero(current->params, sizeof(current->params));
 				current->op = NULL;
 			}
 			current = current->next;

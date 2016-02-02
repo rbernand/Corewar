@@ -6,7 +6,7 @@
 /*   By: erobert <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/19 16:08:21 by erobert           #+#    #+#             */
-/*   Updated: 2016/01/25 15:27:12 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/02 15:10:20 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int			lld(t_process *self, void *memory, t_player *players)
 
 	(void)memory;
 	(void)players;
-	self->carry = !self->carry;
+//	self->carry = !self->carry;
 	rindex = self->params[1].value - 1;
 	if (rindex < 0 || rindex >= REG_NUMBER)
 	{
