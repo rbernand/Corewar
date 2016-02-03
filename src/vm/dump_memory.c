@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 12:01:43 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/22 15:15:23 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/02/03 12:54:34 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 #include "vm.h"
 #include "libft.h"
 
-static char			convert(unsigned char c)
+static char	convert(unsigned char c)
 {
 	if (c < 10)
 		return (c + '0');
 	return (c + 'a' - 10);
 }
 
-static void			put_octet(unsigned char c)
+static void	put_octet(unsigned char c)
 {
 	if (c != 0)
 		ft_putstr("\033[31m");
@@ -31,10 +31,9 @@ static void			put_octet(unsigned char c)
 		ft_putstr("\033[0m");
 }
 
-void				dump_memory(void *ptr, t_player players[MAX_PLAYERS], 
-					t_env *env)
+void		dump_memory(void *ptr, t_player players[MAX_PLAYERS], t_env *env)
 {
-	int				i;
+	int		i;
 
 	(void)players;
 	(void)env;

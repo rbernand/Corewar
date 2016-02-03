@@ -6,21 +6,29 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:56:35 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/25 14:00:50 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/03 15:06:01 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VM_H
 # define VM_H
 
+# include <ncurses.h>
 # include "common.h"
 # include "libft.h"
-# include <stdint.h>
 
 # define SET_PC(X)			((X) % MEM_SIZE)
+# define MEMX				(64)
+# define MEMY				(MEM_SIZE / MEMX)
+# define VERT_CHAR			'-'
+# define HOR_CHAR			'|'
 
-#include <stdio.h>
-#define DEBUG				(dprintf(2, "[%d]%s: %s\n", __LINE__, __FILE__, __FUNCTION__))
+typedef struct				s_ncurses
+{
+	WINDOW					*memory_win;
+	WINDOW					*panel_win;
+	int						key;
+}							t_ncurses;
 
 typedef struct s_player		t_player;
 typedef struct s_action		t_action;
@@ -74,7 +82,7 @@ struct						s_process
 	unsigned int			pc;
 	unsigned int			carry;
 	unsigned int			start;
-	union u_data			params[MAX_ARGS_NUMBER];
+	int64_t					params[MAX_ARGS_NUMBER];
 	int						size_params;
 	t_op					*op;
 	int						parent;
@@ -107,9 +115,9 @@ t_return					parse_argument(int ac, char **av,
 							t_env *env);
 t_return					load_players(t_player players[MAX_PLAYERS]);
 void						*alloc_memory(void);
-void						dump_memory(void *ptr, t_player p[MAX_PLAYERS], 
+void						dump_memory(void *ptr, t_player p[MAX_PLAYERS],
 							t_env *env);
-void						dump_ncurses(void *ptr, t_player p[MAX_PLAYERS], 
+void						dump_ncurses(void *ptr, t_player p[MAX_PLAYERS],
 							t_env *env);
 t_return					put_players_on_memory(
 							t_player players[MAX_PLAYERS],
@@ -117,7 +125,7 @@ t_return					put_players_on_memory(
 t_process					*new_process(int offset, int parent);
 void						play(t_player players[MAX_PLAYERS],
 							void *ptr, unsigned int cycles);
-union u_data				read_memory(void *memory, int pc, int len);
+int64_t						read_memory(void *memory, int pc, int len);
 char						*write_memory(void *memory, int pc, void *src,
 							enum e_player p);
 
@@ -153,6 +161,5 @@ int							aff(t_process *p, void *memory,
 							t_player players[MAX_PLAYERS]);
 int							lldi(t_process *p, void *memory,
 							t_player players[MAX_PLAYERS]);
-
 
 #endif

@@ -6,29 +6,15 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 12:01:43 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/25 14:20:47 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/03 13:08:54 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "common.h"
 #include "vm.h"
 #include "libft.h"
-#include <ncurses.h>
 
-
-# define MEMX			(64)
-# define MEMY			(MEM_SIZE / MEMX)
-# define VERT_CHAR		'-'
-# define HOR_CHAR		'|'
-
-typedef struct 			s_ncurses
-{
-	WINDOW				*memory_win;
-	WINDOW				*panel_win;
-	int					key;
-}						t_ncurses;
-
-static void			init(t_ncurses *data)
+static void				init(t_ncurses *data)
 {
 	initscr();
 	curs_set(0);
@@ -41,14 +27,14 @@ static void			init(t_ncurses *data)
 	init_pair(_P2, COLOR_BLUE, COLOR_BLACK);
 	init_pair(_P3, COLOR_RED, COLOR_BLACK);
 	init_pair(_P4, COLOR_YELLOW, COLOR_BLACK);
-	data->memory_win = newwin(MEMY + 2, MEMX * 3 - 1 + 2, 0, 0);
-	data->panel_win = newwin(LINES, COLS - (MEMX * 3 - 1 + 2), 0, MEMX * 3 - 1 + 2);
+	data->memory_win = newwin(MEMY + 2, 3 * MEMX + 1, 0, 0);
+	data->panel_win = newwin(LINES, COLS - MEMX * 3 - 1, 0, 3 * MEMX + 1);
 }
 
-static void			put_pc(t_ncurses *data, t_player players[MAX_PLAYERS])
+static void				put_pc(t_ncurses *data, t_player players[MAX_PLAYERS])
 {
-	int				i;
-	t_process		*current;
+	int					i;
+	t_process			*current;
 
 	i = 0;
 	while (i < MAX_PLAYERS)
@@ -59,7 +45,8 @@ static void			put_pc(t_ncurses *data, t_player players[MAX_PLAYERS])
 			while (current)
 			{
 				mvwchgat(data->memory_win, current->pc / MEMX + 1,
-					(current->pc % MEMX) * 3 + 1, 2, A_REVERSE, i + 1 + _P_EMPTY, NULL);
+					(current->pc % MEMX) * 3 + 1, 2, A_REVERSE,
+					i + 1 + _P_EMPTY, NULL);
 				current = current->next;
 			}
 		}
@@ -67,10 +54,10 @@ static void			put_pc(t_ncurses *data, t_player players[MAX_PLAYERS])
 	}
 }
 
-static void			put_player(t_ncurses *data)
+static void				put_player(t_ncurses *data)
 {
-	int				i;
-	char			*array;
+	int					i;
+	char				*array;
 
 	array = write_memory(NULL, 0, NULL, _P_EMPTY);
 	i = 0;
@@ -85,22 +72,14 @@ static void			put_player(t_ncurses *data)
 	}
 }
 
-void				dump_ncurses(void *ptr, t_player players[MAX_PLAYERS], 
-					t_env *env)
+static void				put_memory(t_ncurses *data, void *ptr)
 {
-	static t_ncurses			data;
-	int							i;
-	static char					buf[MEMY][MEMX * 3 + 1];
+	int					i;
+	static char			buf[MEMY][MEMX * 3 + 1];
 
-	(void)env;
-	(void)players;
-	if (data.memory_win == 0)
-		init(&data);
-	box(data.panel_win, HOR_CHAR, VERT_CHAR);
-	box(data.memory_win, HOR_CHAR, VERT_CHAR);
 	i = 0;
 	ft_bzero(buf, MEM_SIZE * 3 + 1 + MEMY);
-	mvwchgat(data.memory_win, 1, 1, -1, A_NORMAL, 0, NULL);
+	mvwchgat(data->memory_win, 1, 1, -1, A_NORMAL, 0, NULL);
 	while (i < MEM_SIZE)
 	{
 		sprintf(buf[i / MEMX] + (i % MEMX) * 3,
@@ -112,22 +91,36 @@ void				dump_ncurses(void *ptr, t_player players[MAX_PLAYERS],
 	i = 0;
 	while (i < MEMY)
 	{
-		mvwprintw(data.memory_win, i + 1, 1, "%s", buf[i]);
+		mvwprintw(data->memory_win, i + 1, 1, "%s", buf[i]);
 		i++;
 	}
+}
+
+void					dump_ncurses(void *ptr, t_player players[MAX_PLAYERS],
+						t_env *env)
+{
+	static t_ncurses	data;
+	int					i;
+
+	(void)env;
+	if (data.memory_win == 0)
+		init(&data);
+	box(data.panel_win, HOR_CHAR, VERT_CHAR);
+	box(data.memory_win, HOR_CHAR, VERT_CHAR);
+	put_memory(&data, ptr);
 	put_player(&data);
 	put_pc(&data, players);
 	mvwprintw(data.panel_win, 1, 1, "Cycles: %d", env->cycles);
-	i = 0;
-	while (i < MAX_PLAYERS)
-	{
+	i = -1;
+	while (++i < MAX_PLAYERS)
 		mvwprintw(data.panel_win, 3 + i, 1, "Player %d lives: %d", i + 1,
-				  players[i].lives);
-		i++;
-	}
+			players[i].lives);
 	wrefresh(data.panel_win);
 	wrefresh(data.memory_win);
 	if (data.key == ' ')
-		while ((data.key = getch()) != ' ');
+	{
+		while ((data.key = getch()) != ' ')
+			;
+	}
 	data.key = getch();
 }
