@@ -6,7 +6,7 @@
 /*   By: erobert <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/19 17:01:21 by erobert           #+#    #+#             */
-/*   Updated: 2016/01/19 17:42:24 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/03 15:13:33 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,18 @@
 int			ldi(t_process *self, void *memory, t_player *players)
 {
 	int		rindex;
-	int		tmp;
+	int		pc;
 
 	(void)players;
-	rindex = self->params[2].value;
+	rindex = self->params[2] - 1;
 	if (rindex < 0 || rindex >= REG_NUMBER)
-		return (self->size_params + 1);
-	tmp = self->pc + (self->params[0].value + self->params[1].value) % IDX_MOD;
-	tmp = SET_PC(tmp);
-	self->registers[rindex] = read_memory(memory, tmp, REG_SIZE).value;
-	return (self->size_params + 1);
+	{
+		self->carry = 0;
+		return (self->size_params);
+	}
+	pc = self->pc + (self->params[0] + self->params[1]) % IDX_MOD;
+	pc = SET_PC(pc);
+	self->registers[rindex] = read_memory(memory, pc, REG_SIZE);
+	self->carry = 1;
+	return (self->size_params);
 }

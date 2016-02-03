@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 14:14:40 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/19 17:00:48 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/03 15:42:43 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,19 @@
 
 int			and(t_process *self, void *memory, t_player *players)
 {
-	int64_t			v1;
-	int64_t			v2;
 	int64_t			res;
 	int				rindex;
 
 	(void)memory;
 	(void)players;
-	v1 = self->params[0].value;
-	v2 = self->params[1].value;
-	res = v1 & v2;
-	rindex = self->params[2].value;
+	res = self->params[0] & self->params[1];
+	rindex = self->params[2] - 1;
 	if (rindex < 0 || rindex >= REG_NUMBER)
-		return (self->size_params + 1);
-//	self->carry = (res != 0);
+	{
+		self->carry = 0;
+		return (self->size_params);
+	}
 	self->registers[rindex] = res;
-	return (self->size_params + 1);
+	self->carry = 1;
+	return (self->size_params);
 }
-

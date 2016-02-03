@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:51:06 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/22 16:31:19 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/02/03 16:00:22 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,38 +15,34 @@
 #include "libft.h"
 #include <list.h>
 
-static t_return			print_usage(void)
+static t_return	print_usage(void)
 {
 	ft_putendl_fd("usage: ./corewar [-dump nbr_cycles] "\
 			"[[-n number] champion1.cor] ...", 2);
 	return (_ERR);
 }
 
-static t_return			main_loop(t_player players[MAX_PLAYERS],
-						void *memory, t_env env)
+static t_return	main_loop(t_player players[MAX_PLAYERS],
+					void *memory, t_env env)
 {
-	void						(*dump_fct)(void *memory,
-								t_player[MAX_PLAYERS], t_env *);
+	void		(*dump_fct)(void *memory, t_player[MAX_PLAYERS], t_env *);
 
 	dump_fct = env.graphics ? &dump_ncurses : &dump_memory;
-	if (env.cycles_to_dump)
-		dump_fct(memory, players, &env);
 	while (1)
 	{
 		if (env.cycles_to_dump && env.cycles % env.cycles_to_dump == 0)
 			dump_fct(memory, players, &env);
 		play(players, memory, env.cycles);
 		env.cycles++;
-		return (_SUCCESS);
 	}
 	return (_SUCCESS);
 }
 
-int						main(int ac, char **av)
+int				main(int ac, char **av)
 {
-	t_player				players[MAX_PLAYERS];
-	t_env					env;
-	void					*memory;
+	t_player	players[MAX_PLAYERS];
+	t_env		env;
+	void		*memory;
 
 	ft_bzero(players, sizeof(t_player) * 4);
 	ft_bzero(&env, sizeof(t_env));

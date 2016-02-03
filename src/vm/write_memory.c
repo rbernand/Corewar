@@ -6,34 +6,26 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/22 15:50:54 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/22 16:47:23 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/01/25 15:21:06 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "vm.h"
 
-char						*write_memory(void *memory, int pc, void *src,
-								enum e_player p)
+char			*write_memory(void *memory, int pc, void *src, enum e_player p)
 {
-	static char					*array = NULL;
-	int							i;
-	int							tmp;
+	static char	array[MEM_SIZE] = {0};
+	int			i;
+	int			tmp;
 
-	ft_putendl("da");
-	if (!array)
-	{
-		array = (char *)malloc(MEM_SIZE);
-		ft_bzero(array, MEM_SIZE);
-	}
 	if (memory == NULL)
 		return (array);
 	i = 0;
 	while (i < REG_SIZE)
 	{
-		tmp = SET_PC(pc + i);
-		*(unsigned char *)(memory + tmp) = *(unsigned char *)(src + i);
-		array[tmp] = p;
+		tmp = SET_PC(pc + REG_SIZE - (i + 1));
+		*(char *)(memory + tmp) = *(char *)(src + i);
+		array[tmp] = p + _P_EMPTY;
 		i++;
 	}
 	return (array);

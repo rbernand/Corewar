@@ -6,32 +6,65 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 16:49:25 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/19 15:59:01 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/03 16:19:38 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "list.h"
 #include "vm.h"
 
-void			dump(t_process *self)
+static void		dump_values(t_process *self, int fd)
 {
-	printf("process %d - current pc :: %d\n[", self->id, self->pc);
-	for (int i = 0; i< REG_NUMBER; i++)
-		printf("%d-", self->registers[i]);
-	printf("]\n(");
-	for (int i = 0; i< 3; i++)
-		printf("%lld-", self->params[i].value);
-	printf(")\n");
+	int			i;
+
+	ft_putstr_fd("registers:\t[", fd);
+	i = -1;
+	while (++i < REG_NUMBER)
+	{
+		ft_putnbr_fd(self->registers[i], fd);
+		if (i == REG_NUMBER - 1)
+			ft_putendl_fd("]", fd);
+		else
+			ft_putstr_fd(" ", fd);
+	}
+	ft_putstr_fd("params:\t\t[", fd);
+	i = -1;
+	while (++i < MAX_ARGS_NUMBER)
+	{
+		ft_putnbr_fd(self->params[i], fd);
+		if (i == MAX_ARGS_NUMBER - 1)
+			ft_putendl_fd("]", fd);
+		else
+			ft_putstr_fd(" ", fd);
+	}
 }
 
-t_process			*new_process(int pc)
+static void		dump_process(t_process *self, int fd)
 {
-	static int			id = 0;
-	t_process			*new;
+	ft_putstr_fd("\033[3", fd);
+	ft_putnbr_fd(self->id, fd);
+	ft_putchar_fd('m', fd);
+	ft_putstr_fd("id: ", fd);
+	ft_putnbr_fd(self->id, fd);
+	ft_putstr_fd(", pc: ", fd);
+	ft_putnbr_fd(self->pc, fd);
+	ft_putstr_fd(", carry: ", fd);
+	ft_putnbr_fd(self->carry, fd);
+	ft_putendl_fd("\033[0m", fd);
+	ft_putstr_fd("op: ", fd);
+	ft_putendl_fd(self->op->name, fd);
+	dump_values(self, fd);
+}
+
+t_process		*new_process(int pc, int parent)
+{
+	static int	id = 0;
+	t_process	*new;
 
 	new = NEW_LIST(t_process);
 	new->id = ++id;
 	new->pc = pc;
-	new->dump = &dump;
+	new->parent = parent;
+	new->dump = &dump_process;
 	return (new);
 }
