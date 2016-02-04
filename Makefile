@@ -7,7 +7,7 @@
 #    By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/10/16 15:08:59 by rbernand          #+#    #+#              #
-#    Updated: 2016/01/25 13:32:47 by erobert          ###   ########.fr        #
+#    Updated: 2016/02/04 17:05:46 by erobert          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,7 +78,8 @@ SRC_VM=\
 	aff.c \
 	lldi.c \
 	read_memory.c \
-	write_memory.c
+	write_memory.c \
+	get_register_value.c
 OBJ_ASM=$(SRC_ASM:%.c=$(DIROBJ)$(DIRASM)%.o)
 OBJ_VM=$(SRC_VM:%.c=$(DIROBJ)$(DIRVM)%.o)
 OBJ_COMMON=$(SRC_COMMON:%.c=$(DIROBJ)$(DIRCOMMON)%.o)

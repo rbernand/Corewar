@@ -6,7 +6,7 @@
 /*   By: erobert <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/19 16:08:21 by erobert           #+#    #+#             */
-/*   Updated: 2016/02/04 14:52:11 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/04 16:05:16 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,7 @@ int			lld(t_process *self, void *memory, t_player *players)
 		self->carry = 0;
 		return (self->size_params);
 	}
-	self->registers[rindex] = read_memory(memory, SET_PC(self->pc +
-														 self->params[0]),
-		REG_SIZE);
+	self->registers[rindex] = self->params[0];
 	self->carry = 1;
 	return (self->size_params);
 }

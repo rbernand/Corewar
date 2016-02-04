@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:56:35 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/03 17:34:25 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/04 17:09:05 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ struct						s_process
 	unsigned int			carry;
 	unsigned int			start;
 	int64_t					params[MAX_ARGS_NUMBER];
+	int						types[MAX_ARGS_NUMBER];
 	int						size_params;
 	t_op					*op;
 	int						parent;
@@ -128,6 +129,8 @@ void						play(t_player players[MAX_PLAYERS],
 int64_t						read_memory(void *memory, int pc, int len);
 char						*write_memory(void *memory, int pc, void *src,
 							enum e_player p);
+int							get_register_value(int registers[REG_NUMBER],
+							int64_t *param, int type);
 
 int							live(t_process *p, void *memory,
 							t_player players[MAX_PLAYERS]);

@@ -6,22 +6,20 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 17:39:41 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/04 14:31:23 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/04 16:52:43 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-static int				parse_args(int64_t params[MAX_ARGS_NUMBER],
+static int				parse_args(t_process *p,
 						void *memory, unsigned int pc, int is_short)
 {
 	int					i;
 	unsigned char		ocp;
 	unsigned char		tmp;
 	int					size_params;
-//	unsigned int		old_pc;
 
-//	old_pc = pc;
 	i = 0;
 	size_params = 1;
 	ocp = *(char *)(memory + pc);
@@ -32,28 +30,23 @@ static int				parse_args(int64_t params[MAX_ARGS_NUMBER],
 		tmp = tmp >> 6;
 		if (tmp == DIR_CODE)
 		{
-			params[i] = read_memory(memory, pc, (is_short ?
-												 DIR_SIZE / 2 : DIR_SIZE));
+			p->params[i] = read_memory(memory, pc, (is_short ?
+													DIR_SIZE / 2 : DIR_SIZE));
+			p->types[i] = DIR_CODE;
 			pc = SET_PC(pc + (is_short ? DIR_SIZE / 2 : DIR_SIZE));
 			size_params += (is_short ? DIR_SIZE / 2 : DIR_SIZE);
 		}
 		else if (tmp == IND_CODE)
 		{
-			params[i] = (short)read_memory(memory, pc, IND_SIZE);
-//			params[i] = read_memory(memory, SET_PC(pc + params[i]), REG_SIZE);
-/*			ft_putnbr_fd(params[i], 2);
-			ft_putendl_fd("  DF", 2);
-			params[i] = read_memory(memory, SET_PC(pc + params[i]), IND_SIZE);
-			ft_putnbr_fd(params[i], 2);
-			ft_putendl_fd("  DE", 2);
-			ft_putnbr_fd(old_pc, 2);
-			ft_putendl_fd("  OL", 2);
-*/			pc = SET_PC(pc + IND_SIZE);
+			p->params[i] = (short)read_memory(memory, pc, IND_SIZE);
+			p->types[i] = IND_CODE;
+			pc = SET_PC(pc + IND_SIZE);
 			size_params += IND_SIZE;
 		}
 		else if (tmp == REG_CODE)
 		{
-			params[i] = read_memory(memory, pc, 1);
+			p->params[i] = read_memory(memory, pc, 1);
+			p->types[i] = REG_CODE;
 			pc = SET_PC(pc + 1);
 			size_params += 1;
 		}
@@ -76,7 +69,7 @@ static int			load(t_process *process, void *memory)
 	process->op = get_op_by_id(op_code);
 	process->exec = execs[op_code];
 	if (process->op->has_ocp)
-		process->size_params = parse_args(process->params,
+		process->size_params = parse_args(process,
 				memory, SET_PC(process->pc + 1), process->op->is_short);
 	else
 	{
@@ -92,13 +85,15 @@ static int			load(t_process *process, void *memory)
 	}
 	return (0);
 }
-
+#include <unistd.h>
 void			play(t_player players[MAX_PLAYERS], void *memory,
 				unsigned int cycles)
 {
 	int				i;
 	t_process		*current;
-
+//	char buf[1];
+//	(void)buf;
+//	read(1, &buf, 1);
 	i = MAX_PLAYERS;
 	while (--i >= 0)
 	{
