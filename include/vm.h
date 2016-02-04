@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:56:35 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/03 15:06:01 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/03 17:34:25 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include "common.h"
 # include "libft.h"
 
-# define SET_PC(X)			((X) % MEM_SIZE)
+# define SET_PC(X)			(((X) + MEM_SIZE) % MEM_SIZE)
 # define MEMX				(64)
 # define MEMY				(MEM_SIZE / MEMX)
 # define VERT_CHAR			'-'

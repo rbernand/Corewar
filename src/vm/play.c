@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 17:39:41 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/03 16:41:39 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/04 14:31:23 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,11 @@ static int				parse_args(int64_t params[MAX_ARGS_NUMBER],
 		}
 		else if (tmp == IND_CODE)
 		{
-			params[i] = read_memory(memory, pc, IND_SIZE);
+			params[i] = (short)read_memory(memory, pc, IND_SIZE);
+//			params[i] = read_memory(memory, SET_PC(pc + params[i]), REG_SIZE);
 /*			ft_putnbr_fd(params[i], 2);
 			ft_putendl_fd("  DF", 2);
-			params[i] = read_memory(memory, SET_PC(old_pc + params[i]), IND_SIZE);
+			params[i] = read_memory(memory, SET_PC(pc + params[i]), IND_SIZE);
 			ft_putnbr_fd(params[i], 2);
 			ft_putendl_fd("  DE", 2);
 			ft_putnbr_fd(old_pc, 2);
