@@ -3,8 +3,6 @@
 
 live:
 	#live %1
-	ld 2,  r1
-	#and r1,%0,r2
-	#zjmp %:live
-	#ld 42,  r1
+	add r1, %0, r1
+	ld 0,  r1
 	st r1, 42

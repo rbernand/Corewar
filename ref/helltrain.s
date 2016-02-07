@@ -106,7 +106,7 @@ cc4:
 	fork	%:cc1
 cc4ld:
 	ld		%0, r2
-	ld		%251883523, r3
+	ld		%25123, r3
 	ld		%0, r16
 cc4l:
 	live	%4930423	

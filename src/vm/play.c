@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 17:39:41 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/04 14:31:23 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/04 15:50:24 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,7 @@ static int				parse_args(int64_t params[MAX_ARGS_NUMBER],
 	unsigned char		ocp;
 	unsigned char		tmp;
 	int					size_params;
-//	unsigned int		old_pc;
 
-//	old_pc = pc;
 	i = 0;
 	size_params = 1;
 	ocp = *(char *)(memory + pc);

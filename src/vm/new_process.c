@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 16:49:25 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/04 14:11:19 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/07 15:32:07 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ t_process		*new_process(int pc, int parent)
 	new->id = ++id;
 	new->pc = pc;
 	new->parent = parent;
+	new->lives = 0;
 	new->dump = &dump_process;
 	return (new);
 }
