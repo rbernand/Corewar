@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:51:06 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/03 16:00:22 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/07 16:32:36 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,42 @@
 #include "vm.h"
 #include "libft.h"
 #include <list.h>
+#include <stdlib.h>
 
 static t_return	print_usage(void)
 {
 	ft_putendl_fd("usage: ./corewar [-dump nbr_cycles] "\
 			"[[-n number] champion1.cor] ...", 2);
 	return (_ERR);
+}
+
+static void		check_alive_process(t_player players[MAX_PLAYERS], t_env *env)
+{
+	int				i;
+	int				count;
+	t_process		*tmp;
+	t_process		*tokill;
+
+	i = 0;
+	tokill = NULL;
+	count = 0;
+	while (i < MAX_PLAYERS)
+	{
+		tmp = players[i].process;
+		while (tmp)
+		{
+			if (tmp->lives == 0)
+				tokill = tmp;
+			count += tmp->lives;
+			tmp->lives = 0;
+			tmp = tmp->next;
+			if (tokill)
+				LIST_DELETE(&players[i].process, tokill, free);
+		}
+		i++;
+	}
+	if (count >= NBR_LIVE)
+		env->cycles_to_die -= CYCLE_DELTA;
 }
 
 static t_return	main_loop(t_player players[MAX_PLAYERS],
@@ -34,6 +64,8 @@ static t_return	main_loop(t_player players[MAX_PLAYERS],
 			dump_fct(memory, players, &env);
 		play(players, memory, env.cycles);
 		env.cycles++;
+		if (env.cycles % env.cycles_to_die == 0)
+			check_alive_process(players, &env);
 	}
 	return (_SUCCESS);
 }
@@ -46,6 +78,7 @@ int				main(int ac, char **av)
 
 	ft_bzero(players, sizeof(t_player) * 4);
 	ft_bzero(&env, sizeof(t_env));
+	env.cycles_to_die = CYCLE_TO_DIE;
 	if (parse_argument(ac, av, players, &env) == _ERR)
 		return (print_usage());
 	if (!(memory = alloc_memory()))

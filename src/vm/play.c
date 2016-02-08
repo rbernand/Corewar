@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 17:39:41 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/04 16:52:43 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/08 11:56:10 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,15 +85,13 @@ static int			load(t_process *process, void *memory)
 	}
 	return (0);
 }
-#include <unistd.h>
+
 void			play(t_player players[MAX_PLAYERS], void *memory,
 				unsigned int cycles)
 {
 	int				i;
 	t_process		*current;
-//	char buf[1];
-//	(void)buf;
-//	read(1, &buf, 1);
+
 	i = MAX_PLAYERS;
 	while (--i >= 0)
 	{

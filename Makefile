@@ -1,4 +1,3 @@
-
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
@@ -7,7 +6,7 @@
 #    By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/10/16 15:08:59 by rbernand          #+#    #+#              #
-#    Updated: 2016/02/04 17:05:46 by erobert          ###   ########.fr        #
+#    Updated: 2016/02/08 11:59:24 by erobert          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +32,7 @@ SRC_COMMON=\
 	op.c \
 	list_new.c \
 	list_push_front.c \
+	list_delete.c \
 	list_push_back.c \
 	list_iter.c \
 	list_back.c \
@@ -79,7 +79,8 @@ SRC_VM=\
 	lldi.c \
 	read_memory.c \
 	write_memory.c \
-	get_register_value.c
+	get_register_value.c \
+	last_live.c
 OBJ_ASM=$(SRC_ASM:%.c=$(DIROBJ)$(DIRASM)%.o)
 OBJ_VM=$(SRC_VM:%.c=$(DIROBJ)$(DIRVM)%.o)
 OBJ_COMMON=$(SRC_COMMON:%.c=$(DIROBJ)$(DIRCOMMON)%.o)
@@ -100,7 +101,7 @@ init:
 	@ln -f $(LIBFT)includes/libft.h $(INCLUDES)/
 
 end:
-	@printf "\033[2K\033[1;36m%-20s\033[0;32m[Ready]\033[0m\n" $(NAME)
+	@printf "\r\033[2K\033[1;36m%-20s\033[0;32m[Ready]\033[0m\n" $(NAME)
 
 $(NAME): $(OBJ_COMMON) $(ASM) $(VM)
 
@@ -111,12 +112,12 @@ libft:
 
 
 $(VM): $(OBJ_VM) $(OBJ_COMMON)
-	@printf "\r\033[2KCompiling %s\n" $@
+	@printf "\r\033[2KCompiling %s" $@
 	@$(CC) $(FLAGS) -o $(DIRBIN)$@ $^ -I$(INCLUDES) -L$(DIRLIB) -lft -lncurses
 	@ln -f $(DIRBIN)$@ $@
 
 $(ASM): $(OBJ_ASM) $(OBJ_COMMON)
-	@printf "\r\033[2KCompiling %s\n" $@
+	@printf "\r\033[2KCompiling %s" $@
 	@$(CC) $(FLAGS) -o $(DIRBIN)$@ $^ -I$(INCLUDES) -L$(DIRLIB) -lft
 	@ln -f $(DIRBIN)$@ $@
 

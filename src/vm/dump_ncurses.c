@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 12:01:43 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/03 13:08:54 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/07 17:55:58 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void				init(t_ncurses *data)
 	init_pair(_P3, COLOR_RED, COLOR_BLACK);
 	init_pair(_P4, COLOR_YELLOW, COLOR_BLACK);
 	data->memory_win = newwin(MEMY + 2, 3 * MEMX + 1, 0, 0);
-	data->panel_win = newwin(LINES, COLS - MEMX * 3 - 1, 0, 3 * MEMX + 1);
+	data->panel_win = newwin(MEMY + 2, COLS - MEMX * 3 - 1, 0, 3 * MEMX + 1);
 }
 
 static void				put_pc(t_ncurses *data, t_player players[MAX_PLAYERS])
@@ -96,6 +96,21 @@ static void				put_memory(t_ncurses *data, void *ptr)
 	}
 }
 
+static int				count_players_lives(t_player *player)
+{
+	int				nb;
+	t_process		*tmp;
+
+	nb = 0;
+	tmp = player->process;
+	while (tmp)
+	{
+		nb += tmp->lives;
+		tmp = tmp->next;
+	}
+	return (nb);
+}
+
 void					dump_ncurses(void *ptr, t_player players[MAX_PLAYERS],
 						t_env *env)
 {
@@ -105,22 +120,24 @@ void					dump_ncurses(void *ptr, t_player players[MAX_PLAYERS],
 	(void)env;
 	if (data.memory_win == 0)
 		init(&data);
-	box(data.panel_win, HOR_CHAR, VERT_CHAR);
-	box(data.memory_win, HOR_CHAR, VERT_CHAR);
+	wborder(data.memory_win, ACS_VLINE, '|', ACS_HLINE, ACS_HLINE,
+			ACS_ULCORNER, ACS_TTEE, ACS_LLCORNER, ACS_BTEE);
+	wborder(data.panel_win, ' ', ACS_VLINE, ACS_HLINE, ACS_HLINE,
+			ACS_HLINE, ACS_URCORNER, ACS_HLINE, ACS_LRCORNER);
 	put_memory(&data, ptr);
 	put_player(&data);
 	put_pc(&data, players);
 	mvwprintw(data.panel_win, 1, 1, "Cycles: %d", env->cycles);
 	i = -1;
 	while (++i < MAX_PLAYERS)
-		mvwprintw(data.panel_win, 3 + i, 1, "Player %d lives: %d", i + 1,
-			players[i].lives);
+		if (players[i].is_active)
+			mvwprintw(data.panel_win, 3 + i, 1, "Player '%s' lives: %d",
+				players[i].name, count_players_lives(players + i));
+	mvwprintw(data.panel_win, 10, 1, "CYCLES_TO_DIE: %d", env->cycles_to_die);
+	mvwprintw(data.panel_win, 11, 1, "Last live: %d", last_live(-1));
 	wrefresh(data.panel_win);
 	wrefresh(data.memory_win);
-	if (data.key == ' ')
-	{
-		while ((data.key = getch()) != ' ')
-			;
-	}
 	data.key = getch();
+	if (data.key == ' ')
+		while ((data.key = getch()) != ' ');
 }

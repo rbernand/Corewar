@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:56:35 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/04 17:09:05 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/08 11:58:22 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ struct						s_process
 	t_op					*op;
 	int						parent;
 	void					(*dump)(t_process *, int);
+	int32_t					lives;
 	t_exec_fct				exec;
 };
 
@@ -108,6 +109,7 @@ struct						s_env
 	int						verbose : 1;
 	int						graphics: 1;
 	int						cycles_to_dump;
+	int						cycles_to_die;
 	unsigned int			cycles;
 };
 
@@ -131,6 +133,7 @@ char						*write_memory(void *memory, int pc, void *src,
 							enum e_player p);
 int							get_register_value(int registers[REG_NUMBER],
 							int64_t *param, int type);
+int							last_live(int c);
 
 int							live(t_process *p, void *memory,
 							t_player players[MAX_PLAYERS]);
