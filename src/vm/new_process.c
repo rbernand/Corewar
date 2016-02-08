@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 16:49:25 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/03 16:19:38 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/07 15:32:07 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void		dump_values(t_process *self, int fd)
 static void		dump_process(t_process *self, int fd)
 {
 	ft_putstr_fd("\033[3", fd);
-	ft_putnbr_fd(self->id, fd);
+	ft_putnbr_fd(self->parent, fd);
 	ft_putchar_fd('m', fd);
 	ft_putstr_fd("id: ", fd);
 	ft_putnbr_fd(self->id, fd);
@@ -65,6 +65,7 @@ t_process		*new_process(int pc, int parent)
 	new->id = ++id;
 	new->pc = pc;
 	new->parent = parent;
+	new->lives = 0;
 	new->dump = &dump_process;
 	return (new);
 }

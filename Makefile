@@ -33,6 +33,7 @@ SRC_COMMON=\
 	op.c \
 	list_new.c \
 	list_push_front.c \
+	list_delete.c \
 	list_push_back.c \
 	list_iter.c \
 	list_back.c \
@@ -78,7 +79,8 @@ SRC_VM=\
 	aff.c \
 	lldi.c \
 	read_memory.c \
-	write_memory.c
+	write_memory.c \
+	last_live.c
 OBJ_ASM=$(SRC_ASM:%.c=$(DIROBJ)$(DIRASM)%.o)
 OBJ_VM=$(SRC_VM:%.c=$(DIROBJ)$(DIRVM)%.o)
 OBJ_COMMON=$(SRC_COMMON:%.c=$(DIROBJ)$(DIRCOMMON)%.o)
@@ -99,7 +101,7 @@ init:
 	@ln -f $(LIBFT)includes/libft.h $(INCLUDES)/
 
 end:
-	@printf "\033[2K\033[1;36m%-20s\033[0;32m[Ready]\033[0m\n" $(NAME)
+	@printf "\r\033[2K\033[1;36m%-20s\033[0;32m[Ready]\033[0m\n" $(NAME)
 
 $(NAME): $(OBJ_COMMON) $(ASM) $(VM)
 
@@ -110,12 +112,12 @@ libft:
 
 
 $(VM): $(OBJ_VM) $(OBJ_COMMON)
-	@printf "\r\033[2KCompiling %s\n" $@
+	@printf "\r\033[2KCompiling %s" $@
 	@$(CC) $(FLAGS) -o $(DIRBIN)$@ $^ -I$(INCLUDES) -L$(DIRLIB) -lft -lncurses
 	@ln -f $(DIRBIN)$@ $@
 
 $(ASM): $(OBJ_ASM) $(OBJ_COMMON)
-	@printf "\r\033[2KCompiling %s\n" $@
+	@printf "\r\033[2KCompiling %s" $@
 	@$(CC) $(FLAGS) -o $(DIRBIN)$@ $^ -I$(INCLUDES) -L$(DIRLIB) -lft
 	@ln -f $(DIRBIN)$@ $@
 

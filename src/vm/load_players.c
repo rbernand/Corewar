@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 11:12:35 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/18 12:13:01 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/02/07 16:38:48 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ t_return			load_players(t_player players[MAX_PLAYERS])
 				return (PERROR("read: error reading head of file."));
 			if (check_header(&players[i].header) == _ERR)
 				return (PERROR("check_header: Invalid header."));
+			players[i].name = players[i].header.prog_name;
 		}
 		i++;
 	}

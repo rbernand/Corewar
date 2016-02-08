@@ -6,7 +6,7 @@
 /*   By: erobert <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/19 15:38:59 by erobert           #+#    #+#             */
-/*   Updated: 2016/02/03 15:10:49 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/07 17:57:40 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,6 @@ int				lfork(t_process *self, void *memory, t_player *players)
 	new->carry = self->carry;
 	new->start = self->start;
 	new->op = NULL;
-	PUSH_BACK(&players->process, new);
+	PUSH_FRONT(&players->process, new);
 	return (self->size_params);
 }

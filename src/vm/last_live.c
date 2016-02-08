@@ -1,29 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sti.c                                              :+:      :+:    :+:   */
+/*   last_live.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/18 13:52:44 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/07 15:22:30 by rbernand         ###   ########.fr       */
+/*   Created: 2016/02/07 17:00:32 by rbernand          #+#    #+#             */
+/*   Updated: 2016/02/07 17:01:37 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <vm.h>
+#include "vm.h"
 
-int			sti(t_process *self, void *memory, t_player *players)
+int			last_live(int c)
 {
-	int		pc;
-	int		rindex;
-	int		tmp;
+	static int			last = 0;
 
-	(void)players;
-	rindex = self->params[0] - 1;
-	if (rindex < 0 || rindex >= REG_NUMBER)
-		return (self->size_params);
-	pc = SET_PC(self->pc + self->params[1] + self->params[2]);
-	tmp = self->registers[rindex];
-	write_memory(memory, pc, &tmp, self->parent);
-	return (self->size_params);
+	if (c >= 0)
+		last = c;
+	return (last);
 }

@@ -6,7 +6,7 @@
 /*   By: erobert <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/19 17:09:16 by erobert           #+#    #+#             */
-/*   Updated: 2016/02/03 16:26:28 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/04 16:02:53 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,6 @@ int			xor(t_process *self, void *memory, t_player *players)
 		return (self->size_params);
 	}
 	self->registers[rindex] = res;
-	self->carry = 1;
+	self->carry = self->registers[rindex] == 0;
 	return (self->size_params);
 }
