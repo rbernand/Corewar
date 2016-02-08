@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 12:01:43 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/07 17:55:58 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/02/08 14:36:09 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static void				put_memory(t_ncurses *data, void *ptr)
 	static char			buf[MEMY][MEMX * 3 + 1];
 
 	i = 0;
-	ft_bzero(buf, MEM_SIZE * 3 + 1 + MEMY);
+	ft_bzero(buf, (MEMX * 3 + 1) * MEMY);
 	mvwchgat(data->memory_win, 1, 1, -1, A_NORMAL, 0, NULL);
 	while (i < MEM_SIZE)
 	{

@@ -6,7 +6,7 @@
 /*   By: erobert <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/19 16:28:05 by erobert           #+#    #+#             */
-/*   Updated: 2016/02/04 16:03:26 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/02/08 15:22:05 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,6 @@ int		sub(t_process *self, void *memory, t_player *players)
 	}
 	self->registers[rindex[2]] = self->registers[rindex[0]] -
 		self->registers[rindex[1]];
-	self->carry = self->registers[rindex[2]] == 0;
+	self->carry = EVAL_CARRY(self->registers[rindex[2]]);
 	return (self->size_params);
 }

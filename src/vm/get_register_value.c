@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lld.c                                              :+:      :+:    :+:   */
+/*   get_register_value.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erobert <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/19 16:08:21 by erobert           #+#    #+#             */
-/*   Updated: 2016/02/08 16:05:02 by erobert          ###   ########.fr       */
+/*   Created: 2016/02/04 17:00:59 by erobert           #+#    #+#             */
+/*   Updated: 2016/02/08 15:07:03 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-int			lld(t_process *self, void *memory, t_player *players)
+int		get_register_value(int registers[REG_NUMBER], int64_t *param, int type)
 {
-	int		rindex;
+	int	rindex;
 
-	(void)players;
-	rindex = self->params[1] - 1;
-	self->carry = 0;
-	if (rindex < 0 || rindex >= REG_NUMBER)
-		return (self->size_params);
-	if (!get_binary_op_value(self, memory, 0))
-		return (self->size_params);
-	self->registers[rindex] = self->params[0];
-	self->carry = EVAL_CARRY(self->registers[rindex]);
-	return (self->size_params);
+	if (type == REG_CODE)
+	{
+		rindex = *param - 1;
+		if (rindex < 0 || rindex >= REG_NUMBER)
+			return (0);
+		*param = registers[rindex];
+	}
+	return (1);
 }

@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lld.c                                              :+:      :+:    :+:   */
+/*   get_binary_op_value.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erobert <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/19 16:08:21 by erobert           #+#    #+#             */
-/*   Updated: 2016/02/08 16:05:02 by erobert          ###   ########.fr       */
+/*   Created: 2016/02/08 15:31:01 by erobert           #+#    #+#             */
+/*   Updated: 2016/02/08 15:52:44 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-int			lld(t_process *self, void *memory, t_player *players)
+int		get_binary_op_value(t_process *self, void *memory, int i)
 {
-	int		rindex;
-
-	(void)players;
-	rindex = self->params[1] - 1;
-	self->carry = 0;
-	if (rindex < 0 || rindex >= REG_NUMBER)
-		return (self->size_params);
-	if (!get_binary_op_value(self, memory, 0))
-		return (self->size_params);
-	self->registers[rindex] = self->params[0];
-	self->carry = EVAL_CARRY(self->registers[rindex]);
-	return (self->size_params);
+	if (!get_register_value(self->registers, &self->params[i], self->types[i]))
+		return (0);
+	else if (self->types[i] == IND_CODE)
+		self->params[i] = (short)read_memory(memory,
+											 SET_PC(self->pc +
+													self->params[i]),
+											 IND_SIZE);
+	return (1);
 }
