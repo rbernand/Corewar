@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:56:35 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/08 11:58:22 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/08 15:35:03 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "libft.h"
 
 # define SET_PC(X)			(((X) + MEM_SIZE) % MEM_SIZE)
+# define EVAL_CARRY(X)		((X) == 0)
 # define MEMX				(64)
 # define MEMY				(MEM_SIZE / MEMX)
 # define VERT_CHAR			'-'
@@ -133,6 +134,8 @@ char						*write_memory(void *memory, int pc, void *src,
 							enum e_player p);
 int							get_register_value(int registers[REG_NUMBER],
 							int64_t *param, int type);
+int							get_binary_op_value(t_process *self, void *memory,
+							int i);
 int							last_live(int c);
 
 int							live(t_process *p, void *memory,

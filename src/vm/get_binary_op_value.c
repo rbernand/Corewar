@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_register_value.c                               :+:      :+:    :+:   */
+/*   get_binary_op_value.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erobert <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/02/04 17:00:59 by erobert           #+#    #+#             */
-/*   Updated: 2016/02/08 15:07:03 by erobert          ###   ########.fr       */
+/*   Created: 2016/02/08 15:31:01 by erobert           #+#    #+#             */
+/*   Updated: 2016/02/08 15:52:44 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-int		get_register_value(int registers[REG_NUMBER], int64_t *param, int type)
+int		get_binary_op_value(t_process *self, void *memory, int i)
 {
-	int	rindex;
-
-	if (type == REG_CODE)
-	{
-		rindex = *param - 1;
-		if (rindex < 0 || rindex >= REG_NUMBER)
-			return (0);
-		*param = registers[rindex];
-	}
+	if (!get_register_value(self->registers, &self->params[i], self->types[i]))
+		return (0);
+	else if (self->types[i] == IND_CODE)
+		self->params[i] = (short)read_memory(memory,
+											 SET_PC(self->pc +
+													self->params[i]),
+											 IND_SIZE);
 	return (1);
 }

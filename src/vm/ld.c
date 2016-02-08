@@ -6,7 +6,7 @@
 /*   By: erobert <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/19 16:18:45 by erobert           #+#    #+#             */
-/*   Updated: 2016/02/04 16:10:06 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/08 15:57:49 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,23 @@
 
 int			ld(t_process *self, void *memory, t_player *players)
 {
-	self->params[0] = self->pc + self->params[0] % IDX_MOD;
-	self->params[0] = read_memory(memory, SET_PC(self->params[0]), REG_SIZE);;
-	return (lld(self, memory, players));
+	int		rindex;
+	int		pc;
+
+	(void)players;
+	rindex = self->params[1] - 1;
+	if (rindex < 0 || rindex >= REG_NUMBER)
+	{
+		self->carry = 0;
+		return (self->size_params);
+	}
+	if (self->types[0] == IND_CODE)
+	{
+		pc = SET_PC(self->pc + self->params[0] % IDX_MOD);
+		self->registers[rindex] = read_memory(memory, pc, REG_SIZE);
+	}
+	else
+		self->registers[rindex] = self->params[0];
+	self->carry = EVAL_CARRY(self->registers[rindex]);
+	return (self->size_params);
 }

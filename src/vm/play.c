@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 17:39:41 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/08 11:56:10 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/08 16:18:50 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,24 +32,22 @@ static int				parse_args(t_process *p,
 		{
 			p->params[i] = read_memory(memory, pc, (is_short ?
 													DIR_SIZE / 2 : DIR_SIZE));
-			p->types[i] = DIR_CODE;
 			pc = SET_PC(pc + (is_short ? DIR_SIZE / 2 : DIR_SIZE));
 			size_params += (is_short ? DIR_SIZE / 2 : DIR_SIZE);
 		}
 		else if (tmp == IND_CODE)
 		{
 			p->params[i] = (short)read_memory(memory, pc, IND_SIZE);
-			p->types[i] = IND_CODE;
 			pc = SET_PC(pc + IND_SIZE);
 			size_params += IND_SIZE;
 		}
 		else if (tmp == REG_CODE)
 		{
 			p->params[i] = read_memory(memory, pc, 1);
-			p->types[i] = REG_CODE;
 			pc = SET_PC(pc + 1);
 			size_params += 1;
 		}
+		p->types[i] = tmp;
 		i++;
 	}
 	return (size_params);
@@ -85,16 +83,19 @@ static int			load(t_process *process, void *memory)
 	}
 	return (0);
 }
-
+#include <unistd.h>
 void			play(t_player players[MAX_PLAYERS], void *memory,
 				unsigned int cycles)
 {
 	int				i;
 	t_process		*current;
-
+	char buf[1];
 	i = MAX_PLAYERS;
+	if (cycles >= 5400)
+		read(1, buf, 1);
 	while (--i >= 0)
 	{
+
 		if (!players[i].is_active)
 			continue ;
 		current = players[i].process;
@@ -102,9 +103,9 @@ void			play(t_player players[MAX_PLAYERS], void *memory,
 		{
 			if (current->op == NULL)
 			{
+				current->start = cycles;
 				current->pc = SET_PC(current->pc);
 				current->pc = SET_PC(current->pc + load(current, memory));
-				current->start = cycles;
 			}
 			else if (cycles - current->start >= current->op->nb_cycles - 1)
 			{

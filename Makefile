@@ -6,7 +6,7 @@
 #    By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/10/16 15:08:59 by rbernand          #+#    #+#              #
-#    Updated: 2016/02/08 11:59:24 by erobert          ###   ########.fr        #
+#    Updated: 2016/02/08 15:34:28 by erobert          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME=Corewar
 ASM=asm
 VM=corewar
 CC=	cc
-FLAGS=-Wall -Wextra -Werror -g
+FLAGS=-Wall -Wextra -Werror
 LIBFT=libft/
 LIBVECT=libvect/
 LIBMLX11=minilibx/
@@ -80,6 +80,7 @@ SRC_VM=\
 	read_memory.c \
 	write_memory.c \
 	get_register_value.c \
+	get_binary_op_value.c \
 	last_live.c
 OBJ_ASM=$(SRC_ASM:%.c=$(DIROBJ)$(DIRASM)%.o)
 OBJ_VM=$(SRC_VM:%.c=$(DIROBJ)$(DIRVM)%.o)

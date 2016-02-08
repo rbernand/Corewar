@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 13:52:44 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/08 11:55:43 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/08 16:00:47 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int			sti(t_process *self, void *memory, t_player *players)
 	rindex = self->params[0] - 1;
 	if (rindex < 0 || rindex >= REG_NUMBER)
 		return (self->size_params);
-	if (!get_register_value(self->registers, &self->params[1], self->types[1]))
+	if (!get_binary_op_value(self, memory, 1))
 		return (self->size_params);
 	if (!get_register_value(self->registers, &self->params[2], self->types[2]))
 		return (self->size_params);
