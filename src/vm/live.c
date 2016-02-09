@@ -6,27 +6,37 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 11:58:16 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/09 13:42:52 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/02/09 17:01:32 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <vm.h>
 
-int			live(t_process *self, void *memory, t_player *players,
-			t_process **p)
+int					live(t_process *self, void *memory, t_player *players,
+						t_process **p)
 {
+	static int		verbose = 1;
 	int				id_p;
 
-	(void)p;
-	(void)memory;
+	if (!memory && !p)
+	{
+		verbose = !verbose;
+		return (0);
+	}
 	id_p = -self->params[0];
-	if (!(id_p >= 1 && id_p <= 4) || !players[id_p - 1].is_active)
-		return (self->size_params);
-	//ft_putstr("un processus dit que le joueur ");
-	//ft_putstr(players[id_p - 1].name);
-	//ft_putendl(" est en vie");
-	players[id_p - 1].lives++;
+	if (id_p >= 1 && id_p <= 4 && players[id_p - 1].is_active)
+	{
+		last_live(-id_p);
+		players[id_p - 1].lives++;
+		if (verbose)
+		{
+			ft_putstr_fd("un processus dit que le joueur ", 2);
+			ft_putstr_fd(players[id_p - 1].name, 2);
+			ft_putendl_fd(" est en vie", 2);
+		}
+	}
+	else
+		ft_putendl_fd("un processus dit qu'un joueur fantome est en vie", 2);
 	self->lives++;
-	last_live(id_p);
 	return (self->size_params);
 }

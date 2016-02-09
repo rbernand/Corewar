@@ -6,7 +6,7 @@
 #    By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/10/16 15:08:59 by rbernand          #+#    #+#              #
-#    Updated: 2016/02/09 11:58:41 by rbernand         ###   ########.fr        #
+#    Updated: 2016/02/09 16:16:52 by erobert          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME=Corewar
 ASM=asm
 VM=corewar
 CC=	cc
-FLAGS=-Wall -Wextra -Werror
+FLAGS=-Wall -Wextra -Werror -g
 LIBFT=libft/
 LIBVECT=libvect/
 LIBMLX11=minilibx/
@@ -36,6 +36,7 @@ SRC_COMMON=\
 	list_push_back.c \
 	list_iter.c \
 	list_back.c \
+	list_count.c \
 	ft_strip_chrs.c \
 	swap_uint.c \
 	get_op_by_id.c

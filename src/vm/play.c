@@ -6,18 +6,38 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 17:39:41 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/09 15:12:10 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/09 16:45:56 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
+static int				get_size_param(uint32_t *pc, int is_short, uint8_t tmp)
+{
+	if (tmp == DIR_CODE)
+	{
+		*pc = SET_PC(*pc + (is_short ? DIR_SIZE / 2 : DIR_SIZE));
+		return (is_short ? DIR_SIZE / 2 : DIR_SIZE);
+	}
+	else if (tmp == IND_CODE)
+	{
+		*pc = SET_PC(*pc + IND_SIZE);
+		return (IND_SIZE);
+	}
+	else if (tmp == REG_CODE)
+	{
+		*pc = SET_PC(*pc + 1);
+		return (1);
+	}
+	return (0);
+}
+
 static int				parse_params(t_process *p, void *memory,
 							unsigned int pc, int is_short)
 {
 	int					i;
-	unsigned char		ocp;
-	unsigned char		tmp;
+	uint8_t				ocp;
+	uint8_t				tmp;
 	int					size_params;
 
 	i = 0;
@@ -29,24 +49,13 @@ static int				parse_params(t_process *p, void *memory,
 		tmp = ocp << i * 2;
 		tmp = tmp >> 6;
 		if (tmp == DIR_CODE)
-		{
 			p->params[i] = read_memory(memory, pc, (is_short ?
-													DIR_SIZE / 2 : DIR_SIZE));
-			pc = SET_PC(pc + (is_short ? DIR_SIZE / 2 : DIR_SIZE));
-			size_params += (is_short ? DIR_SIZE / 2 : DIR_SIZE);
-		}
+										DIR_SIZE / 2 : DIR_SIZE));
 		else if (tmp == IND_CODE)
-		{
 			p->params[i] = (short)read_memory(memory, pc, IND_SIZE);
-			pc = SET_PC(pc + IND_SIZE);
-			size_params += IND_SIZE;
-		}
 		else if (tmp == REG_CODE)
-		{
 			p->params[i] = read_memory(memory, pc, 1);
-			pc = SET_PC(pc + 1);
-			size_params += 1;
-		}
+		size_params += get_size_param(&pc, is_short, tmp);
 		p->types[i] = tmp;
 		i++;
 	}
@@ -73,7 +82,7 @@ static void				load_params(t_process *self, void *memory)
 
 static int				load_op(t_process *process, void *memory)
 {
-	unsigned char		op_code;
+	uint8_t				op_code;
 	static t_exec_fct	execs[_MAX_ACTIONS] = { NULL, &live, &ld, &st, &add,
 												&sub, &and, &or, &xor, &zjmp,
 												&ldi, &sti, &sfork, &lld,

@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:51:06 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/09 15:03:14 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/09 16:50:25 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,20 @@
 #include <curses.h>
 #include <stdlib.h>
 
-static t_return	print_usage(void)
+static t_return		print_usage(void)
 {
 	ft_putendl_fd("usage: ./corewar [-dump nbr_cycles] "\
 			"[[-n number] champion1.cor] ...", 2);
 	return (_ERR);
 }
 
-static void		check_alive_process(t_env *env,
-				t_process **process, t_player players[MAX_PLAYERS])
+static void			check_alive_process(t_env *env, t_process **process)
 {
-	int				i;
+	static int		nb_checks = 0;
 	int				count;
 	t_process		*tmp;
 	t_process		*tokill;
 
-	i = 0;
 	tokill = NULL;
 	count = 0;
 	tmp = *process;
@@ -42,40 +40,51 @@ static void		check_alive_process(t_env *env,
 			tokill = tmp;
 		count += tmp->lives;
 		tmp->lives = 0;
-		players[tmp->parent].lives = 0;
 		tmp = tmp->next;
 		if (tokill)
 			LIST_DELETE(process, tokill, free);
 	}
-	if (count >= NBR_LIVE)
-		env->cycles_to_die -= CYCLE_DELTA;
+	if (count >= NBR_LIVE || nb_checks == MAX_CHECKS)
+	{
+		env->cycles_to_die = MAX(env->cycles_to_die - CYCLE_DELTA, 0);
+		nb_checks = 0;
+	}
+	nb_checks++;
 }
 
-static t_return	main_loop(t_player players[MAX_PLAYERS],
-					void *memory, t_env env)
+static t_return		main_loop(t_player players[MAX_PLAYERS],
+						void *memory, t_env env)
 {
-	void		(*dump_fct)(void *memory, t_player[MAX_PLAYERS], t_env *);
+	void			(*dump_fct)(void *memory, t_player[MAX_PLAYERS], t_env *);
 
 	dump_fct = env.graphics ? &dump_ncurses : &dump_memory;
 	while (1)
 	{
 		if (env.process == NULL)
-			break ;
+			return (_SUCCESS);
 		if (env.cycles_to_dump && env.cycles % env.cycles_to_dump == 0)
 			dump_fct(memory, players, &env);
 		play(players, &env.process, memory, env.cycles);
 		env.cycles++;
+		if (!env.cycles_to_die)
+			return (_SUCCESS);
 		if (env.cycles % env.cycles_to_die == 0)
-			check_alive_process(&env, &env.process, players);
+		{
+			players[0].lives = 0;
+			players[1].lives = 0;
+			players[2].lives = 0;
+			players[3].lives = 0;
+			check_alive_process(&env, &env.process);
+		}
 	}
 	return (_SUCCESS);
 }
 
-int				main(int ac, char **av)
+int					main(int ac, char **av)
 {
-	t_player	players[MAX_PLAYERS];
-	t_env		env;
-	void		*memory;
+	t_player		players[MAX_PLAYERS];
+	t_env			env;
+	void			*memory;
 
 	ft_bzero(players, sizeof(t_player) * 4);
 	ft_bzero(&env, sizeof(t_env));
@@ -91,5 +100,7 @@ int				main(int ac, char **av)
 	main_loop(players, memory, env);
 	if (env.graphics)
 		endwin();
+	printf("Player (%d) '%s' has win.\n", -last_live(0),
+		players[-last_live(0) - 1].name);
 	return (0);
 }

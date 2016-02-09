@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:56:35 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/09 13:37:47 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/02/09 16:29:11 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # define MEMY				(MEM_SIZE / MEMX)
 # define VERT_CHAR			'-'
 # define HOR_CHAR			'|'
+# define MIN(X, Y)			(((X) < (Y)) ? (X) : (Y))
+# define MAX(X, Y)			(((X) > (Y)) ? (X) : (Y))
 
 typedef struct				s_ncurses
 {
@@ -117,61 +119,62 @@ struct						s_env
 };
 
 t_return					parse_argument(int ac, char **av,
-							t_player players[MAX_PLAYERS],
-							t_env *env);
+								t_player players[MAX_PLAYERS],
+								t_env *env);
 t_return					load_players(t_player players[MAX_PLAYERS]);
 void						*alloc_memory(void);
 void						dump_memory(void *ptr, t_player p[MAX_PLAYERS],
-							t_env *env);
+								t_env *env);
 void						dump_ncurses(void *ptr, t_player p[MAX_PLAYERS],
-							t_env *env);
+								t_env *env);
 t_return					put_players_on_memory(t_player players[MAX_PLAYERS],
-							void *memory, t_env *env);
+								void *memory, t_env *env);
 t_process					*new_process(int offset, int parent);
 void						play(t_player players[MAX_PLAYERS],
-							t_process **process, void *ptr, unsigned int cycles);
+								t_process **process, void *ptr,
+								unsigned int cycles);
 int64_t						read_memory(void *memory, int pc, int len);
 char						*write_memory(void *memory, int pc, void *src,
-							enum e_player p);
+								enum e_player p);
 int							get_register_value(int registers[REG_NUMBER],
-							int64_t *param, int type);
+								int64_t *param, int type);
 int							get_binary_op_value(t_process *self, void *memory,
-							int i);
+								int i);
 int							last_live(int c);
 
 void						init_ncurses(t_ncurses *data);
 
 int							live(t_process *p, void *memory,
-							t_player players[MAX_PLAYERS], t_process **pp);
+								t_player players[MAX_PLAYERS], t_process **pp);
 int							sti(t_process *p, void *memory,
-							t_player players[MAX_PLAYERS], t_process **pp);
+								t_player players[MAX_PLAYERS], t_process **pp);
 int							and(t_process *p, void *memory,
-							t_player players[MAX_PLAYERS], t_process **pp);
+								t_player players[MAX_PLAYERS], t_process **pp);
 int							zjmp(t_process *p, void *memory,
-							t_player players[MAX_PLAYERS], t_process **pp);
+								t_player players[MAX_PLAYERS], t_process **pp);
 int							lfork(t_process *p, void *memory,
-							t_player players[MAX_PLAYERS], t_process **pp);
+								t_player players[MAX_PLAYERS], t_process **pp);
 int							sfork(t_process *p, void *memory,
-							t_player players[MAX_PLAYERS], t_process **pp);
+								t_player players[MAX_PLAYERS], t_process **pp);
 int							lld(t_process *p, void *memory,
-							t_player players[MAX_PLAYERS], t_process **pp);
+								t_player players[MAX_PLAYERS], t_process **pp);
 int							ld(t_process *p, void *memory,
-							t_player players[MAX_PLAYERS], t_process **pp);
+								t_player players[MAX_PLAYERS], t_process **pp);
 int							add(t_process *p, void *memory,
-							t_player players[MAX_PLAYERS], t_process **pp);
+								t_player players[MAX_PLAYERS], t_process **pp);
 int							sub(t_process *p, void *memory,
-							t_player players[MAX_PLAYERS], t_process **pp);
+								t_player players[MAX_PLAYERS], t_process **pp);
 int							ldi(t_process *p, void *memory,
-							t_player players[MAX_PLAYERS], t_process **pp);
+								t_player players[MAX_PLAYERS], t_process **pp);
 int							or(t_process *p, void *memory,
-							t_player players[MAX_PLAYERS], t_process **pp);
+								t_player players[MAX_PLAYERS], t_process **pp);
 int							xor(t_process *p, void *memory,
-							t_player players[MAX_PLAYERS], t_process **pp);
+								t_player players[MAX_PLAYERS], t_process **pp);
 int							st(t_process *p, void *memory,
-							t_player players[MAX_PLAYERS], t_process **pp);
+								t_player players[MAX_PLAYERS], t_process **pp);
 int							aff(t_process *p, void *memory,
-							t_player players[MAX_PLAYERS], t_process **pp);
+								t_player players[MAX_PLAYERS], t_process **pp);
 int							lldi(t_process *p, void *memory,
-							t_player players[MAX_PLAYERS], t_process **pp);
+								t_player players[MAX_PLAYERS], t_process **pp);
 
 #endif

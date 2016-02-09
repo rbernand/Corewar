@@ -1,22 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   last_live.c                                        :+:      :+:    :+:   */
+/*   list_count.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: erobert <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/02/07 17:00:32 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/09 15:22:56 by rbernand         ###   ########.fr       */
+/*   Created: 2016/02/09 16:14:30 by erobert           #+#    #+#             */
+/*   Updated: 2016/02/09 16:15:20 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vm.h"
+#include "list.h"
 
-int			last_live(int c)
+int		list_count(t_list *lst)
 {
-	static int			last = 0;
+	int	nb;
 
-	if (c < 0)
-		last = c;
-	return (last);
+	nb = 0;
+	while (lst)
+	{
+		nb++;
+		lst = lst->next;
+	}
+	return (nb);
 }

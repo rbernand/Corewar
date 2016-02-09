@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 12:01:43 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/09 14:45:15 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/02/09 16:25:31 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "common.h"
 #include "vm.h"
 #include "libft.h"
+#include "list.h"
 
 static void				put_pc(t_ncurses *data, t_process *process)
 {
@@ -68,26 +69,27 @@ static void				put_memory(t_ncurses *data, void *ptr)
 	}
 }
 
-static int				count_players_lives(int id, t_process *p)
+static void				put_panel(WINDOW *panel_win,
+						t_player players[MAX_PLAYERS], t_env *env)
 {
-	int				nb;
+	int					i;
 
-	nb = 0;
-	while (p)
-	{
-		ft_putnbr_fd(id, 2);
-		if (p->parent == id)
-			nb += p->lives;
-		p = p->next;
-	}
-	return (nb);
+	mvwprintw(panel_win, 1, 1, "Cycles: %d", env->cycles);
+	i = -1;
+	while (++i < MAX_PLAYERS)
+		if (players[i].is_active)
+			mvwprintw(panel_win, 3 + i, 1, "Player (%d)'%s' lives: %5d",
+						players[i].id, players[i].name, players[i].lives);
+	mvwprintw(panel_win, 10, 1, "Cycles to die: %5d", env->cycles_to_die);
+	mvwprintw(panel_win, 11, 1, "Last live: %9d", last_live(0));
+	mvwprintw(panel_win, 12, 1, "Number process: %4d",
+				LIST_COUNT(env->process));
 }
 
 void					dump_ncurses(void *ptr, t_player players[MAX_PLAYERS],
 						t_env *env)
 {
 	static t_ncurses	data;
-	int					i;
 
 	(void)env;
 	if (data.memory_win == 0)
@@ -99,18 +101,11 @@ void					dump_ncurses(void *ptr, t_player players[MAX_PLAYERS],
 	put_memory(&data, ptr);
 	put_player(&data);
 	put_pc(&data, env->process);
-	mvwprintw(data.panel_win, 1, 1, "Cycles: %d", env->cycles);
-	i = -1;
-	while (++i < MAX_PLAYERS)
-		if (players[i].is_active)
-			mvwprintw(data.panel_win, 3 + i, 1, "Player (%d)'%s' lives: %d",
-				players[i].id, players[i].name,
-				count_players_lives(i + 1, env->process));
-	mvwprintw(data.panel_win, 10, 1, "CYCLES_TO_DIE: %5d", env->cycles_to_die);
-	mvwprintw(data.panel_win, 11, 1, "Last live: %d", last_live(-1));
+	put_panel(data.panel_win, players, env);
 	wrefresh(data.panel_win);
 	wrefresh(data.memory_win);
 	data.key = getch();
 	if (data.key == ' ')
-		while ((data.key = getch()) != ' ');
+		while ((data.key = getch()) != ' ')
+			;
 }

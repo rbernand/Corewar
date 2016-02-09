@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/09 11:57:47 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/09 11:59:36 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/02/09 17:01:28 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,5 @@ void				init_ncurses(t_ncurses *data)
 	init_pair(_P4, COLOR_YELLOW, COLOR_BLACK);
 	data->memory_win = newwin(MEMY + 2, 3 * MEMX + 1, 0, 0);
 	data->panel_win = newwin(MEMY + 2, COLS - MEMX * 3 - 1, 0, 3 * MEMX + 1);
+	live(NULL, NULL, NULL, NULL);
 }
