@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:56:35 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/09 13:37:47 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/02/09 15:32:05 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # define MEMY				(MEM_SIZE / MEMX)
 # define VERT_CHAR			'-'
 # define HOR_CHAR			'|'
+# define MIN(X, Y)			(((X) < (Y)) ? (X) : (Y))
+# define MAX(X, Y)			(((X) > (Y)) ? (X) : (Y))
 
 typedef struct				s_ncurses
 {

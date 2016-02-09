@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/07 17:00:32 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/07 17:01:37 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/02/09 15:22:56 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int			last_live(int c)
 {
 	static int			last = 0;
 
-	if (c >= 0)
+	if (c < 0)
 		last = c;
 	return (last);
 }

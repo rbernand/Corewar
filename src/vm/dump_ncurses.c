@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 12:01:43 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/09 14:45:15 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/02/09 15:44:28 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,15 @@ static void				put_memory(t_ncurses *data, void *ptr)
 	}
 }
 
-static int				count_players_lives(int id, t_process *p)
+static int				count_process(t_process *process)
 {
-	int				nb;
+	int			nb;
 
 	nb = 0;
-	while (p)
+	while (process)
 	{
-		ft_putnbr_fd(id, 2);
-		if (p->parent == id)
-			nb += p->lives;
-		p = p->next;
+		nb++;
+		process = process->next;
 	}
 	return (nb);
 }
@@ -105,9 +103,10 @@ void					dump_ncurses(void *ptr, t_player players[MAX_PLAYERS],
 		if (players[i].is_active)
 			mvwprintw(data.panel_win, 3 + i, 1, "Player (%d)'%s' lives: %d",
 				players[i].id, players[i].name,
-				count_players_lives(i + 1, env->process));
+				players[i].lives);
 	mvwprintw(data.panel_win, 10, 1, "CYCLES_TO_DIE: %5d", env->cycles_to_die);
-	mvwprintw(data.panel_win, 11, 1, "Last live: %d", last_live(-1));
+	mvwprintw(data.panel_win, 11, 1, "Last live: %d", last_live(0));
+	mvwprintw(data.panel_win, 12, 1, "Numer process: %d", count_process(env->process));
 	wrefresh(data.panel_win);
 	wrefresh(data.memory_win);
 	data.key = getch();

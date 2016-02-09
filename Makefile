@@ -6,7 +6,7 @@
 #    By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/10/16 15:08:59 by rbernand          #+#    #+#              #
-#    Updated: 2016/02/09 11:58:41 by rbernand         ###   ########.fr        #
+#    Updated: 2016/02/09 15:16:24 by rbernand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME=Corewar
 ASM=asm
 VM=corewar
 CC=	cc
-FLAGS=-Wall -Wextra -Werror
+FLAGS=-Wall -Wextra -Werror -g
 LIBFT=libft/
 LIBVECT=libvect/
 LIBMLX11=minilibx/

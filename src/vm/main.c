@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:51:06 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/09 13:42:41 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/02/09 15:44:56 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void		check_alive_process(t_env *env,
 			LIST_DELETE(process, tokill, free);
 	}
 	if (count >= NBR_LIVE)
-		env->cycles_to_die -= CYCLE_DELTA;
+		env->cycles_to_die = MAX(env->cycles_to_die - CYCLE_DELTA, 0);
 }
 
 static t_return	main_loop(t_player players[MAX_PLAYERS],
@@ -91,7 +91,7 @@ int				main(int ac, char **av)
 	main_loop(players, memory, env);
 	if (env.graphics)
 		endwin();
-	printf("Player (%d) '%s' has win.\n", last_live(-1),
-		players[last_live(-1) - 1].name);
+	printf("Player (%d) '%s' has win.\n", -last_live(0),
+		players[-last_live(0) - 1].name);
 	return (0);
 }
