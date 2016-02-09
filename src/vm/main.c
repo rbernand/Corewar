@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:51:06 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/07 16:32:36 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/02/08 20:02:06 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static t_return	main_loop(t_player players[MAX_PLAYERS],
 			dump_fct(memory, players, &env);
 		play(players, memory, env.cycles);
 		env.cycles++;
-		if (env.cycles % env.cycles_to_die == 0)
+		if (env.cycles % env.cycles_to_die == 165165461)
 			check_alive_process(players, &env);
 	}
 	return (_SUCCESS);

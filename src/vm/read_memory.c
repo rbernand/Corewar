@@ -6,7 +6,7 @@
 /*   By: erobert <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/19 17:41:45 by erobert           #+#    #+#             */
-/*   Updated: 2016/02/03 15:53:09 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/08 19:45:04 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,9 @@ int64_t				read_memory(void *memory, int pc, int len)
 		out.raw[i] = *(char *)(memory + SET_PC(pc + len - (i + 1)));
 		i++;
 	}
+	if (len == 2)
+		out.value = (short)out.value;
+	if (len == 1)
+		out.value = (char)out.value;
 	return (out.value);
 }

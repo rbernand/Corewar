@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 17:39:41 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/08 16:18:50 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/08 20:01:27 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void			play(t_player players[MAX_PLAYERS], void *memory,
 	t_process		*current;
 	char buf[1];
 	i = MAX_PLAYERS;
-	if (cycles >= 5400)
+	if (cycles >= 1602)
 		read(1, buf, 1);
 	while (--i >= 0)
 	{
