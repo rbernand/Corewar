@@ -6,7 +6,7 @@
 /*   By: erobert <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/19 17:01:21 by erobert           #+#    #+#             */
-/*   Updated: 2016/02/09 11:31:23 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/02/09 15:00:35 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int			ldi(t_process *self, void *memory, t_player *players, t_process **p)
 	if (!get_register_value(self->registers, &self->params[1], self->types[1]))
 		return (self->size_params);
 	pc = SET_PC(self->pc + (self->params[0] + self->params[1]) % IDX_MOD);
-//	pc = self->pc + (self->params[0] + self->params[1] + 2) % IDX_MOD;
 	self->registers[rindex] = read_memory(memory, pc, REG_SIZE);
 	self->carry = EVAL_CARRY(self->registers[rindex]);
 	return (self->size_params);

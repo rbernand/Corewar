@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:51:06 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/09 13:42:41 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/02/09 15:03:14 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,5 @@ int				main(int ac, char **av)
 	main_loop(players, memory, env);
 	if (env.graphics)
 		endwin();
-	printf("Player (%d) '%s' has win.\n", last_live(-1),
-		players[last_live(-1) - 1].name);
 	return (0);
 }

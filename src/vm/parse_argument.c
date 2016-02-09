@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:54:54 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/09 12:27:24 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/02/09 15:04:49 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ t_return			parse_argument(int ac, char **av,
 			curs_player = ft_atoi(av[i++ + 1]) - 1;
 		else if (av[i][0] == '-')
 			return (PERROR("Invalid option."));
-		else if (init_player(players + curs_player, &curs_player, av[i]) == _ERR)
+		else if (init_player(players + curs_player, &curs_player, av[i])
+					== _ERR)
 			return (PERROR("init_player: error during creation."));
 		i++;
 	}
