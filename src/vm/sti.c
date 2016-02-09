@@ -6,17 +6,18 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 13:52:44 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/08 16:00:47 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/09 11:27:07 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <vm.h>
 
-int			sti(t_process *self, void *memory, t_player *players)
+int			sti(t_process *self, void *memory, t_player *players, t_process **p)
 {
 	int		pc;
 	int		rindex;
 
+	(void)p;
 	(void)players;
 	rindex = self->params[0] - 1;
 	if (rindex < 0 || rindex >= REG_NUMBER)

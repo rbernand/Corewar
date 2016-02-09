@@ -6,11 +6,12 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 16:11:30 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/08 13:30:33 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/09 12:19:32 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+#include "list.h"
 #include <unistd.h>
 #include <stdlib.h>
 
@@ -54,7 +55,7 @@ static int			count_players(t_player players[MAX_PLAYERS])
 }
 
 t_return			put_players_on_memory(t_player players[MAX_PLAYERS],
-						void *memory)
+						void *memory, t_env *env)
 {
 	int				nbplayers;
 	int				i;
@@ -63,18 +64,19 @@ t_return			put_players_on_memory(t_player players[MAX_PLAYERS],
 	nbplayers = count_players(players);
 	if (nbplayers == 0)
 		return (PERROR("No players. Noob"));
-	offset = MEM_SIZE / nbplayers;
+	offset = 0;
 	i = 0;
 	while (i < MAX_PLAYERS)
 	{
 		if (players[i].is_active)
 		{
-			if (copy_player(memory, offset * (i % nbplayers), &players[i])
+			if (copy_player(memory, offset, &players[i])
 				== _ERR)
 				return (PERROR("copy_player: error durint copy."));
-			players[i].process = new_process((i % nbplayers) * offset,
-					players[i].number);
-			players[i].process->registers[0] = -(i + 1);
+			PUSH_FRONT(&env->process, new_process(offset, players[i].number));
+			env->process->registers[0] = -(i + 1);
+			players[i].id = -(i + 1);
+			offset += MEM_SIZE / nbplayers;
 		}
 		i++;
 	}

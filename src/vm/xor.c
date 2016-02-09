@@ -6,17 +6,18 @@
 /*   By: erobert <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/19 17:09:16 by erobert           #+#    #+#             */
-/*   Updated: 2016/02/08 15:38:37 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/09 11:31:58 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-int			xor(t_process *self, void *memory, t_player *players)
+int			xor(t_process *self, void *memory, t_player *players, t_process **p)
 {
 	int		rindex;
 
 	(void)players;
+	(void)p;
 	rindex = self->params[2] - 1;
 	self->carry = 0;
 	if (rindex < 0 || rindex >= REG_NUMBER)

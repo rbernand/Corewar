@@ -6,18 +6,19 @@
 /*   By: erobert <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/19 16:18:45 by erobert           #+#    #+#             */
-/*   Updated: 2016/02/08 15:57:49 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/09 11:30:01 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-int			ld(t_process *self, void *memory, t_player *players)
+int			ld(t_process *self, void *memory, t_player *players, t_process **p)
 {
 	int		rindex;
 	int		pc;
 
 	(void)players;
+	(void)p;
 	rindex = self->params[1] - 1;
 	if (rindex < 0 || rindex >= REG_NUMBER)
 	{

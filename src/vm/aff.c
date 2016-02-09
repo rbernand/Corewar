@@ -6,14 +6,15 @@
 /*   By: erobert <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/19 17:21:18 by erobert           #+#    #+#             */
-/*   Updated: 2016/02/08 16:09:01 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/09 11:32:31 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-int			aff(t_process *self, void *memory, t_player *players)
+int			aff(t_process *self, void *memory, t_player *players, t_process **p)
 {
+	(void)p;
 	(void)memory;
 	(void)players;
 	if (!get_register_value(self->registers, &self->params[0], self->types[0]))

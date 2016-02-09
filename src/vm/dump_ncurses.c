@@ -6,51 +6,23 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 12:01:43 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/08 14:36:09 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/09 13:34:00 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <curses.h>
 #include "common.h"
 #include "vm.h"
 #include "libft.h"
 
-static void				init(t_ncurses *data)
+static void				put_pc(t_ncurses *data, t_process *process)
 {
-	initscr();
-	curs_set(0);
-	noecho();
-	data->key = ' ';
-	start_color();
-	nodelay(stdscr, TRUE);
-	init_pair(_P_EMPTY, COLOR_WHITE, COLOR_BLACK);
-	init_pair(_P1, COLOR_GREEN, COLOR_BLACK);
-	init_pair(_P2, COLOR_BLUE, COLOR_BLACK);
-	init_pair(_P3, COLOR_RED, COLOR_BLACK);
-	init_pair(_P4, COLOR_YELLOW, COLOR_BLACK);
-	data->memory_win = newwin(MEMY + 2, 3 * MEMX + 1, 0, 0);
-	data->panel_win = newwin(MEMY + 2, COLS - MEMX * 3 - 1, 0, 3 * MEMX + 1);
-}
-
-static void				put_pc(t_ncurses *data, t_player players[MAX_PLAYERS])
-{
-	int					i;
-	t_process			*current;
-
-	i = 0;
-	while (i < MAX_PLAYERS)
+	while (process)
 	{
-		if (players[i].is_active)
-		{
-			current = players[i].process;
-			while (current)
-			{
-				mvwchgat(data->memory_win, current->pc / MEMX + 1,
-					(current->pc % MEMX) * 3 + 1, 2, A_REVERSE,
-					i + 1 + _P_EMPTY, NULL);
-				current = current->next;
-			}
-		}
-		i++;
+		mvwchgat(data->memory_win, process->pc / MEMX + 1,
+			(process->pc % MEMX) * 3 + 1, 2, A_REVERSE,
+			process->parent + _P_EMPTY, NULL);
+		process = process->next;
 	}
 }
 
@@ -96,17 +68,17 @@ static void				put_memory(t_ncurses *data, void *ptr)
 	}
 }
 
-static int				count_players_lives(t_player *player)
+static int				count_players_lives(int id, t_process *p)
 {
 	int				nb;
-	t_process		*tmp;
 
 	nb = 0;
-	tmp = player->process;
-	while (tmp)
+	while (p)
 	{
-		nb += tmp->lives;
-		tmp = tmp->next;
+		ft_putnbr_fd(id, 2);
+		if (p->parent == id)
+			nb += p->lives;
+		p = p->next;
 	}
 	return (nb);
 }
@@ -119,20 +91,21 @@ void					dump_ncurses(void *ptr, t_player players[MAX_PLAYERS],
 
 	(void)env;
 	if (data.memory_win == 0)
-		init(&data);
+		init_ncurses(&data);
 	wborder(data.memory_win, ACS_VLINE, '|', ACS_HLINE, ACS_HLINE,
 			ACS_ULCORNER, ACS_TTEE, ACS_LLCORNER, ACS_BTEE);
 	wborder(data.panel_win, ' ', ACS_VLINE, ACS_HLINE, ACS_HLINE,
 			ACS_HLINE, ACS_URCORNER, ACS_HLINE, ACS_LRCORNER);
 	put_memory(&data, ptr);
 	put_player(&data);
-	put_pc(&data, players);
+	put_pc(&data, env->process);
 	mvwprintw(data.panel_win, 1, 1, "Cycles: %d", env->cycles);
 	i = -1;
 	while (++i < MAX_PLAYERS)
 		if (players[i].is_active)
-			mvwprintw(data.panel_win, 3 + i, 1, "Player '%s' lives: %d",
-				players[i].name, count_players_lives(players + i));
+			mvwprintw(data.panel_win, 3 + i, 1, "Player (%d)'%s' lives: %d",
+				players[i].id, players[i].name,
+				count_players_lives(i + 1, env->process));
 	mvwprintw(data.panel_win, 10, 1, "CYCLES_TO_DIE: %d", env->cycles_to_die);
 	mvwprintw(data.panel_win, 11, 1, "Last live: %d", last_live(-1));
 	wrefresh(data.panel_win);

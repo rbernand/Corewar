@@ -6,14 +6,15 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:51:06 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/08 20:02:06 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/02/09 13:42:41 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "common.h"
 #include "vm.h"
 #include "libft.h"
-#include <list.h>
+#include "list.h"
+#include <curses.h>
 #include <stdlib.h>
 
 static t_return	print_usage(void)
@@ -23,7 +24,8 @@ static t_return	print_usage(void)
 	return (_ERR);
 }
 
-static void		check_alive_process(t_player players[MAX_PLAYERS], t_env *env)
+static void		check_alive_process(t_env *env,
+				t_process **process, t_player players[MAX_PLAYERS])
 {
 	int				i;
 	int				count;
@@ -33,20 +35,17 @@ static void		check_alive_process(t_player players[MAX_PLAYERS], t_env *env)
 	i = 0;
 	tokill = NULL;
 	count = 0;
-	while (i < MAX_PLAYERS)
+	tmp = *process;
+	while (tmp)
 	{
-		tmp = players[i].process;
-		while (tmp)
-		{
-			if (tmp->lives == 0)
-				tokill = tmp;
-			count += tmp->lives;
-			tmp->lives = 0;
-			tmp = tmp->next;
-			if (tokill)
-				LIST_DELETE(&players[i].process, tokill, free);
-		}
-		i++;
+		if (tmp->lives == 0)
+			tokill = tmp;
+		count += tmp->lives;
+		tmp->lives = 0;
+		players[tmp->parent].lives = 0;
+		tmp = tmp->next;
+		if (tokill)
+			LIST_DELETE(process, tokill, free);
 	}
 	if (count >= NBR_LIVE)
 		env->cycles_to_die -= CYCLE_DELTA;
@@ -60,12 +59,14 @@ static t_return	main_loop(t_player players[MAX_PLAYERS],
 	dump_fct = env.graphics ? &dump_ncurses : &dump_memory;
 	while (1)
 	{
+		if (env.process == NULL)
+			break ;
 		if (env.cycles_to_dump && env.cycles % env.cycles_to_dump == 0)
 			dump_fct(memory, players, &env);
-		play(players, memory, env.cycles);
+		play(players, &env.process, memory, env.cycles);
 		env.cycles++;
-		if (env.cycles % env.cycles_to_die == 165165461)
-			check_alive_process(players, &env);
+		if (env.cycles % env.cycles_to_die == 0)
+			check_alive_process(&env, &env.process, players);
 	}
 	return (_SUCCESS);
 }
@@ -85,8 +86,12 @@ int				main(int ac, char **av)
 		return (PERROR("alloc_memory: Failed to load VM."));
 	if (load_players(players) == _ERR)
 		return (PERROR("load_players: Error during players initialization."));
-	if (put_players_on_memory(players, memory) == _ERR)
+	if (put_players_on_memory(players, memory, &env) == _ERR)
 		return (PERROR("failed during init."));
 	main_loop(players, memory, env);
+	if (env.graphics)
+		endwin();
+	printf("Player (%d) '%s' has win.\n", last_live(-1),
+		players[last_live(-1) - 1].name);
 	return (0);
 }

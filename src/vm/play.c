@@ -6,13 +6,13 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 17:39:41 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/08 20:01:27 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/02/09 13:34:31 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-static int				parse_args(t_process *p,
+static int			parse_args(t_process *p,
 						void *memory, unsigned int pc, int is_short)
 {
 	int					i;
@@ -83,40 +83,34 @@ static int			load(t_process *process, void *memory)
 	}
 	return (0);
 }
-#include <unistd.h>
-void			play(t_player players[MAX_PLAYERS], void *memory,
-				unsigned int cycles)
-{
-	int				i;
-	t_process		*current;
-	char buf[1];
-	i = MAX_PLAYERS;
-	if (cycles >= 1602)
-		read(1, buf, 1);
-	while (--i >= 0)
-	{
 
-		if (!players[i].is_active)
-			continue ;
-		current = players[i].process;
-		while (current)
+/* #include <unistd.h> */
+void				play(t_player players[MAX_PLAYERS], t_process **tmp,
+					void *memory, unsigned int cycles)
+{
+	t_process			*process;
+
+	/* char buf[1]; */
+	/* if (cycles >= 1602) */
+		/* read(1, buf, 1); */
+	process = *tmp;
+	while (process)
+	{
+		if (process->op == NULL)
 		{
-			if (current->op == NULL)
-			{
-				current->start = cycles;
-				current->pc = SET_PC(current->pc);
-				current->pc = SET_PC(current->pc + load(current, memory));
-			}
-			else if (cycles - current->start >= current->op->nb_cycles - 1)
-			{
-				current->dump(current, 2);
-				current->pc = SET_PC(current->pc
-						+ current->exec(current, memory, players)
-						+ 1);
-				ft_bzero(current->params, sizeof(current->params));
-				current->op = NULL;
-			}
-			current = current->next;
+			process->start = cycles;
+			process->pc = SET_PC(process->pc); // WHY?
+			process->pc = SET_PC(process->pc + load(process, memory));
 		}
+		else if (cycles - process->start >= process->op->nb_cycles - 1)
+		{
+			/* process->dump(process, 2); */
+			process->pc = SET_PC(process->pc
+					+ process->exec(process, memory, players, tmp)
+					+ 1);
+			ft_bzero(process->params, sizeof(process->params));
+			process->op = NULL;
+		}
+		process = process->next;
 	}
 }

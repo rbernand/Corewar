@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:54:54 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/07 15:23:23 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/02/09 12:27:24 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,22 @@
 #include <vm.h>
 #include <libft.h>
 
-t_return		parse_argument(int ac, char **av,
-				t_player players[MAX_PLAYERS], t_env *env)
+static t_return		init_player(t_player *player, int *curs_player,
+					char *filename)
+{
+	if (*curs_player < 0 || *curs_player >= MAX_PLAYERS)
+		return (PERROR("Invalid champ number."));
+	else if (player->is_active)
+		return (PERROR("champ already set."));
+	player->is_active = 1;
+	player->file_name = filename;
+	player->number = *curs_player + 1;
+	*curs_player = (*curs_player + 1) % MAX_PLAYERS;
+	return (_SUCCESS);
+}
+
+t_return			parse_argument(int ac, char **av,
+					t_player players[MAX_PLAYERS], t_env *env)
 {
 	int				i;
 	int				curs_player;
@@ -36,17 +50,8 @@ t_return		parse_argument(int ac, char **av,
 			curs_player = ft_atoi(av[i++ + 1]) - 1;
 		else if (av[i][0] == '-')
 			return (PERROR("Invalid option."));
-		else
-		{
-			if (curs_player < 0 || curs_player >= MAX_PLAYERS)
-				return (PERROR("Invalid champ number."));
-			else if (players[curs_player].is_active)
-				return (PERROR("champ already set."));
-			players[curs_player].is_active = 1;
-			players[curs_player].file_name = av[i];
-			players[curs_player].number = curs_player + 1;
-			curs_player = (curs_player + 1) % MAX_PLAYERS;
-		}
+		else if (init_player(players + curs_player, &curs_player, av[i]) == _ERR)
+			return (PERROR("init_player: error during creation."));
 		i++;
 	}
 	return (_SUCCESS);

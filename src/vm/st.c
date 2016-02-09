@@ -6,18 +6,19 @@
 /*   By: erobert <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/19 17:10:55 by erobert           #+#    #+#             */
-/*   Updated: 2016/02/08 14:18:37 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/09 11:32:15 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-int			st(t_process *self, void *memory, t_player *players)
+int			st(t_process *self, void *memory, t_player *players, t_process **p)
 {
 	int		rindex;
 	int		pc;
 
 	(void)players;
+	(void)p;
 	rindex = self->params[0] - 1;
 	if (rindex < 0 || rindex >= REG_NUMBER)
 		return (self->size_params);
