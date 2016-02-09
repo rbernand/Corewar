@@ -6,13 +6,13 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 17:39:41 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/09 13:34:31 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/02/09 14:42:42 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-static int			parse_args(t_process *p,
+static int			parse_params(t_process *p,
 						void *memory, unsigned int pc, int is_short)
 {
 	int					i;
@@ -53,7 +53,26 @@ static int			parse_args(t_process *p,
 	return (size_params);
 }
 
-static int			load(t_process *process, void *memory)
+static void			load_params(t_process *self, void *memory)
+{
+	if (self->op->has_ocp)
+		self->size_params = parse_params(self,
+				memory, SET_PC(self->pc + 1), self->op->is_short);
+	else
+	{
+		if (self->op->is_short)
+			self->params[0] = (short)read_memory(memory,
+													self->pc + 1,
+													DIR_SIZE / 2);
+		else
+			self->params[0] = read_memory(memory, self->pc + 1,
+											 DIR_SIZE);
+		self->size_params = (self->op->is_short ?
+								DIR_SIZE / 2 : DIR_SIZE);
+	}
+}
+
+static int			load_op(t_process *process, void *memory)
 {
 	unsigned char		op_code;
 	static t_exec_fct	execs[_MAX_ACTIONS] = { NULL, &live, &ld, &st, &add,
@@ -66,21 +85,6 @@ static int			load(t_process *process, void *memory)
 		return (1);
 	process->op = get_op_by_id(op_code);
 	process->exec = execs[op_code];
-	if (process->op->has_ocp)
-		process->size_params = parse_args(process,
-				memory, SET_PC(process->pc + 1), process->op->is_short);
-	else
-	{
-		if (process->op->is_short)
-			process->params[0] = (short)read_memory(memory,
-													process->pc + 1,
-													DIR_SIZE / 2);
-		else
-			process->params[0] = read_memory(memory, process->pc + 1,
-											 DIR_SIZE);
-		process->size_params = (process->op->is_short ?
-								DIR_SIZE / 2 : DIR_SIZE);
-	}
 	return (0);
 }
 
@@ -100,11 +104,12 @@ void				play(t_player players[MAX_PLAYERS], t_process **tmp,
 		{
 			process->start = cycles;
 			process->pc = SET_PC(process->pc); // WHY?
-			process->pc = SET_PC(process->pc + load(process, memory));
+			process->pc = SET_PC(process->pc + load_op(process, memory));
 		}
 		else if (cycles - process->start >= process->op->nb_cycles - 1)
 		{
 			/* process->dump(process, 2); */
+			load_params(process, memory);
 			process->pc = SET_PC(process->pc
 					+ process->exec(process, memory, players, tmp)
 					+ 1);

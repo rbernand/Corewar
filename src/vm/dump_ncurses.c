@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 12:01:43 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/09 13:34:00 by rbernand         ###   ########.fr       */
+/*   Updated: 2016/02/09 14:45:15 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void					dump_ncurses(void *ptr, t_player players[MAX_PLAYERS],
 			mvwprintw(data.panel_win, 3 + i, 1, "Player (%d)'%s' lives: %d",
 				players[i].id, players[i].name,
 				count_players_lives(i + 1, env->process));
-	mvwprintw(data.panel_win, 10, 1, "CYCLES_TO_DIE: %d", env->cycles_to_die);
+	mvwprintw(data.panel_win, 10, 1, "CYCLES_TO_DIE: %5d", env->cycles_to_die);
 	mvwprintw(data.panel_win, 11, 1, "Last live: %d", last_live(-1));
 	wrefresh(data.panel_win);
 	wrefresh(data.memory_win);
