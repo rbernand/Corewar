@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/14 17:39:41 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/09 16:45:56 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/11 16:35:10 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static int				load_op(t_process *process, void *memory)
 												&ldi, &sti, &sfork, &lld,
 												&lldi, &lfork, &aff };
 
-	op_code = *(unsigned char *)(memory + process->pc);
+	op_code = *(unsigned char *)(memory + SET_PC(process->pc));
 	if (op_code == 0 || op_code > _MAX_ACTIONS)
 		return (1);
 	process->op = get_op_by_id(op_code);
