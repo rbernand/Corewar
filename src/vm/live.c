@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 11:58:16 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/09 17:01:32 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/11 15:44:42 by erobert          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int					live(t_process *self, void *memory, t_player *players,
 			ft_putendl_fd(" est en vie", 2);
 		}
 	}
-	else
+	else if (verbose)
 		ft_putendl_fd("un processus dit qu'un joueur fantome est en vie", 2);
 	self->lives++;
 	return (self->size_params);
