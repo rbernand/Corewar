@@ -6,7 +6,7 @@
 /*   By: rbernand <rbernand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/11 19:54:54 by rbernand          #+#    #+#             */
-/*   Updated: 2016/02/09 17:01:02 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/13 17:35:51 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_return			parse_argument(int ac, char **av,
 			env->cycles_to_dump = ft_atoi(av[i++ + 1]);
 		else if (ft_strcmp(av[i], "-g") == 0)
 			env->graphics = 1;
-		else if (ft_strcmp(av[i], "-n") == 0 && i + 2 == ac)
+		else if (ft_strcmp(av[i], "-n") == 0 && i + 2 >= ac)
 			return (PERROR("missing champ file after -n."));
 		else if (ft_strcmp(av[i], "-n") == 0)
 			curs_player = ft_atoi(av[i++ + 1]) - 1;

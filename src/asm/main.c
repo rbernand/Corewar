@@ -6,7 +6,7 @@
 /*   By: rbernand <rbenand@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/16 18:10:51 by rbernand          #+#    #+#             */
-/*   Updated: 2016/01/12 11:20:13 by erobert          ###   ########.fr       */
+/*   Updated: 2016/02/13 17:34:14 by rbernand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ static int			open_output_file(const char *name)
 	cor_file = ft_strnew(len + 2);
 	ft_strncat(cor_file, name, len - 2);
 	ft_strcat(cor_file, COR_EXTENSION);
+	ft_putstr("Writting in: ");
 	ft_putendl(cor_file);
 	fd = open(cor_file, O_WRONLY | O_TRUNC | O_CREAT, S_IRWXU);
 	free(cor_file);
@@ -85,7 +86,8 @@ int					main(int ac, char **av)
 	header.magic = COREWAR_EXEC_MAGIC;
 	instructions = NULL;
 	labels = NULL;
-	parse(fd, &header, &instructions, &labels);
+	if (parse(fd, &header, &instructions, &labels) == _ERR)
+		return (_ERR);
 	close(fd);
 	if (link_labels(instructions, labels, &header) == _ERR)
 		return (PERROR("error with label"));
